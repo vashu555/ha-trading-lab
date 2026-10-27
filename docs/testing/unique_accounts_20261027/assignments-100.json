@@ -1,0 +1,407 @@
+{
+  "accounts": [
+    {
+      "account": "trader-041",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-042",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-043",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-044",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-045",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-046",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-047",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-048",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-049",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-050",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-051",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-052",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-053",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-054",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-055",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-056",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-057",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-058",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-059",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-060",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-061",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-062",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-063",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-064",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-065",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-066",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-067",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-068",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-069",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-070",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-071",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-072",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-073",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-074",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-075",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-076",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-077",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-078",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-079",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-080",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-081",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-082",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-083",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-084",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-085",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-086",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-087",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-088",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-089",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-090",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-091",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-092",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-093",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-094",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-095",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-096",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-097",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-098",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-099",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-100",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-101",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-102",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-103",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-104",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-105",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-106",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-107",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-108",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-109",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-110",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-111",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-112",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-113",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-114",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-115",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-116",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-117",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-118",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-119",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-120",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-121",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-122",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-123",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-124",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-125",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-126",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-127",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-128",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-129",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-130",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-131",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-132",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-133",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-134",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-135",
+      "worker": "23f5381f5907_e386f8edc690400eace3c6b417c8734a"
+    },
+    {
+      "account": "trader-136",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-137",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-138",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-139",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    },
+    {
+      "account": "trader-140",
+      "worker": "23f5381f5907_c33511d87ef5452f996d62e4503a686b"
+    }
+  ],
+  "assigned": 100,
+  "available": 60,
+  "capacity": 160
+}

@@ -1,0 +1,2203 @@
+{
+  "t": 1792983772.4517171,
+  "ready": true,
+  "boot": "running",
+  "sites": {
+    "azure-z1": "Azure \u00b7 Central India \u00b7 Zone 1",
+    "azure-z2": "Azure \u00b7 Central India \u00b7 Zone 2",
+    "oracle": "Oracle Cloud \u00b7 Mumbai (ap-mumbai-1)"
+  },
+  "status": {
+    "containers": {
+      "router-2": {
+        "service": "router-2",
+        "container": "hal-router-2",
+        "site": "azure-z2",
+        "kind": "router",
+        "state": "running",
+        "status_text": "Up 47 minutes"
+      },
+      "haproxy-2": {
+        "service": "haproxy-2",
+        "container": "hal-haproxy-2",
+        "site": "azure-z2",
+        "kind": "haproxy",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "haproxy-1": {
+        "service": "haproxy-1",
+        "container": "hal-haproxy-1",
+        "site": "azure-z1",
+        "kind": "haproxy",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "exchange": {
+        "service": "exchange",
+        "container": "hal-exchange",
+        "site": "nse",
+        "kind": "exchange",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "control": {
+        "service": "control",
+        "container": "hal-control",
+        "site": "ops",
+        "kind": "control",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "router-1": {
+        "service": "router-1",
+        "container": "hal-router-1",
+        "site": "azure-z1",
+        "kind": "router",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "worker-2": {
+        "service": "worker-2",
+        "container": "hal-worker-2",
+        "site": "oracle",
+        "kind": "worker",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "worker-1": {
+        "service": "worker-1",
+        "container": "hal-worker-1",
+        "site": "azure-z2",
+        "kind": "worker",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "relay-2": {
+        "service": "relay-2",
+        "container": "hal-relay-2",
+        "site": "azure-z2",
+        "kind": "relay",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "relay-1": {
+        "service": "relay-1",
+        "container": "hal-relay-1",
+        "site": "azure-z1",
+        "kind": "relay",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "bridge-2": {
+        "service": "bridge-2",
+        "container": "hal-bridge-2",
+        "site": "oracle",
+        "kind": "bridge",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "bridge-1": {
+        "service": "bridge-1",
+        "container": "hal-bridge-1",
+        "site": "azure-z2",
+        "kind": "bridge",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "feed-2": {
+        "service": "feed-2",
+        "container": "hal-feed-2",
+        "site": "oracle",
+        "kind": "feed",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "feed-1": {
+        "service": "feed-1",
+        "container": "hal-feed-1",
+        "site": "azure-z1",
+        "kind": "feed",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "api-4": {
+        "service": "api-4",
+        "container": "hal-api-4",
+        "site": "azure-z2",
+        "kind": "api",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "api-3": {
+        "service": "api-3",
+        "container": "hal-api-3",
+        "site": "azure-z2",
+        "kind": "api",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "api-2": {
+        "service": "api-2",
+        "container": "hal-api-2",
+        "site": "azure-z1",
+        "kind": "api",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "api-1": {
+        "service": "api-1",
+        "container": "hal-api-1",
+        "site": "azure-z1",
+        "kind": "api",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "pg-3": {
+        "service": "pg-3",
+        "container": "hal-pg-3",
+        "site": "oracle",
+        "kind": "postgres",
+        "state": "running",
+        "status_text": "Up 7 hours (healthy)"
+      },
+      "pg-2": {
+        "service": "pg-2",
+        "container": "hal-pg-2",
+        "site": "azure-z2",
+        "kind": "postgres",
+        "state": "running",
+        "status_text": "Up 7 hours (healthy)"
+      },
+      "pg-1": {
+        "service": "pg-1",
+        "container": "hal-pg-1",
+        "site": "azure-z1",
+        "kind": "postgres",
+        "state": "running",
+        "status_text": "Up 7 hours (healthy)"
+      },
+      "sentinel-1": {
+        "service": "sentinel-1",
+        "container": "hal-sentinel-1",
+        "site": "azure-z1",
+        "kind": "sentinel",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "sentinel-3": {
+        "service": "sentinel-3",
+        "container": "hal-sentinel-3",
+        "site": "oracle",
+        "kind": "sentinel",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "sentinel-2": {
+        "service": "sentinel-2",
+        "container": "hal-sentinel-2",
+        "site": "azure-z2",
+        "kind": "sentinel",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "pgbouncer-2": {
+        "service": "pgbouncer-2",
+        "container": "hal-pgbouncer-2",
+        "site": "azure-z2",
+        "kind": "pgbouncer",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "redis-2": {
+        "service": "redis-2",
+        "container": "hal-redis-2",
+        "site": "azure-z2",
+        "kind": "redis",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "redis-3": {
+        "service": "redis-3",
+        "container": "hal-redis-3",
+        "site": "oracle",
+        "kind": "redis",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "rabbit-3": {
+        "service": "rabbit-3",
+        "container": "hal-rabbit-3",
+        "site": "oracle",
+        "kind": "rabbitmq",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "rabbit-2": {
+        "service": "rabbit-2",
+        "container": "hal-rabbit-2",
+        "site": "azure-z2",
+        "kind": "rabbitmq",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "redis-1": {
+        "service": "redis-1",
+        "container": "hal-redis-1",
+        "site": "azure-z1",
+        "kind": "redis",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "rabbit-1": {
+        "service": "rabbit-1",
+        "container": "hal-rabbit-1",
+        "site": "azure-z1",
+        "kind": "rabbitmq",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "etcd-3": {
+        "service": "etcd-3",
+        "container": "hal-etcd-3",
+        "site": "oracle",
+        "kind": "etcd",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "etcd-2": {
+        "service": "etcd-2",
+        "container": "hal-etcd-2",
+        "site": "azure-z2",
+        "kind": "etcd",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "kafka-2": {
+        "service": "kafka-2",
+        "container": "hal-kafka-2",
+        "site": "azure-z2",
+        "kind": "kafka",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "etcd-1": {
+        "service": "etcd-1",
+        "container": "hal-etcd-1",
+        "site": "azure-z1",
+        "kind": "etcd",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "kafka-1": {
+        "service": "kafka-1",
+        "container": "hal-kafka-1",
+        "site": "azure-z1",
+        "kind": "kafka",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "kafka-3": {
+        "service": "kafka-3",
+        "container": "hal-kafka-3",
+        "site": "oracle",
+        "kind": "kafka",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      },
+      "pgbouncer-1": {
+        "service": "pgbouncer-1",
+        "container": "hal-pgbouncer-1",
+        "site": "azure-z1",
+        "kind": "pgbouncer",
+        "state": "running",
+        "status_text": "Up 7 hours"
+      }
+    },
+    "patroni": {
+      "members": [
+        {
+          "name": "pg-1",
+          "role": "quorum_standby",
+          "state": "streaming",
+          "api_url": "http://pg-1:8008/patroni",
+          "host": "pg-1",
+          "port": 5432,
+          "timeline": 23,
+          "lag": 0
+        },
+        {
+          "name": "pg-2",
+          "role": "leader",
+          "state": "running",
+          "api_url": "http://pg-2:8008/patroni",
+          "host": "pg-2",
+          "port": 5432,
+          "timeline": 23
+        },
+        {
+          "name": "pg-3",
+          "role": "quorum_standby",
+          "state": "streaming",
+          "api_url": "http://pg-3:8008/patroni",
+          "host": "pg-3",
+          "port": 5432,
+          "timeline": 23,
+          "lag": 0
+        }
+      ],
+      "scope": "tradelab"
+    },
+    "etcd": {
+      "etcd-1": {
+        "up": true,
+        "leader": false,
+        "term": "27"
+      },
+      "etcd-2": {
+        "up": true,
+        "leader": true,
+        "term": "27"
+      },
+      "etcd-3": {
+        "up": true,
+        "leader": false,
+        "term": "27"
+      }
+    },
+    "kafka": {
+      "brokers": [
+        1,
+        2,
+        3
+      ],
+      "topics": {
+        "orders.submit": [
+          {
+            "p": 0,
+            "leader": 2,
+            "isr": [
+              2,
+              1,
+              3
+            ],
+            "replicas": [
+              2,
+              3,
+              1
+            ]
+          },
+          {
+            "p": 1,
+            "leader": 3,
+            "isr": [
+              2,
+              3,
+              1
+            ],
+            "replicas": [
+              3,
+              1,
+              2
+            ]
+          },
+          {
+            "p": 2,
+            "leader": 1,
+            "isr": [
+              2,
+              3,
+              1
+            ],
+            "replicas": [
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "p": 3,
+            "leader": 3,
+            "isr": [
+              2,
+              3,
+              1
+            ],
+            "replicas": [
+              3,
+              1,
+              2
+            ]
+          },
+          {
+            "p": 4,
+            "leader": 1,
+            "isr": [
+              2,
+              3,
+              1
+            ],
+            "replicas": [
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "p": 5,
+            "leader": 2,
+            "isr": [
+              2,
+              1,
+              3
+            ],
+            "replicas": [
+              2,
+              3,
+              1
+            ]
+          }
+        ],
+        "orders.events": [
+          {
+            "p": 0,
+            "leader": 2,
+            "isr": [
+              2,
+              3,
+              1
+            ],
+            "replicas": [
+              2,
+              3,
+              1
+            ]
+          },
+          {
+            "p": 1,
+            "leader": 3,
+            "isr": [
+              2,
+              3,
+              1
+            ],
+            "replicas": [
+              3,
+              1,
+              2
+            ]
+          },
+          {
+            "p": 2,
+            "leader": 1,
+            "isr": [
+              2,
+              1,
+              3
+            ],
+            "replicas": [
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "p": 3,
+            "leader": 1,
+            "isr": [
+              2,
+              3,
+              1
+            ],
+            "replicas": [
+              1,
+              3,
+              2
+            ]
+          },
+          {
+            "p": 4,
+            "leader": 3,
+            "isr": [
+              2,
+              3,
+              1
+            ],
+            "replicas": [
+              3,
+              2,
+              1
+            ]
+          },
+          {
+            "p": 5,
+            "leader": 2,
+            "isr": [
+              2,
+              3,
+              1
+            ],
+            "replicas": [
+              2,
+              1,
+              3
+            ]
+          }
+        ],
+        "marketdata.ticks.lineA": [
+          {
+            "p": 0,
+            "leader": 1,
+            "isr": [
+              1
+            ],
+            "replicas": [
+              1
+            ]
+          },
+          {
+            "p": 1,
+            "leader": 1,
+            "isr": [
+              1
+            ],
+            "replicas": [
+              1
+            ]
+          },
+          {
+            "p": 2,
+            "leader": 1,
+            "isr": [
+              1
+            ],
+            "replicas": [
+              1
+            ]
+          }
+        ],
+        "marketdata.ticks.lineB": [
+          {
+            "p": 0,
+            "leader": 3,
+            "isr": [
+              3
+            ],
+            "replicas": [
+              3
+            ]
+          },
+          {
+            "p": 1,
+            "leader": 3,
+            "isr": [
+              3
+            ],
+            "replicas": [
+              3
+            ]
+          },
+          {
+            "p": 2,
+            "leader": 3,
+            "isr": [
+              3
+            ],
+            "replicas": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "rabbit": {
+      "asked": "rabbit-1",
+      "nodes": {
+        "rabbit-1": true,
+        "rabbit-2": true,
+        "rabbit-3": true
+      },
+      "queue": {
+        "leader": "rabbit-1",
+        "members": [
+          "rabbit-1",
+          "rabbit-2",
+          "rabbit-3"
+        ],
+        "online": [
+          "rabbit-1",
+          "rabbit-2",
+          "rabbit-3"
+        ],
+        "ready": 0,
+        "unacked": 0,
+        "consumers": 2
+      }
+    },
+    "redis": {
+      "master": "redis-1",
+      "nodes": {
+        "redis-1": {
+          "up": true,
+          "role": "master",
+          "replicas": 2,
+          "link": null
+        },
+        "redis-2": {
+          "up": true,
+          "role": "slave",
+          "replicas": 0,
+          "link": "up"
+        },
+        "redis-3": {
+          "up": true,
+          "role": "slave",
+          "replicas": 0,
+          "link": "up"
+        }
+      },
+      "sentinels": {
+        "sentinel-1": true,
+        "sentinel-2": true,
+        "sentinel-3": true
+      }
+    },
+    "lease": {
+      "holder": "router-1",
+      "epoch": 165,
+      "expires_in": 2.6
+    },
+    "exchange": {
+      "boot": 1792960026077,
+      "broken": false,
+      "halted": false,
+      "open_orders": 882,
+      "orders_in_memory": 6876,
+      "tick_seq": 81716,
+      "event_seq": 64950,
+      "prices": {
+        "RELIANCE": {
+          "price": 2956.4,
+          "open": 2950.0,
+          "t": 1792983771.3358626
+        },
+        "TCS": {
+          "price": 4062.3,
+          "open": 4100.0,
+          "t": 1792983770.9648461
+        },
+        "INFY": {
+          "price": 1779.95,
+          "open": 1850.0,
+          "t": 1792983771.7629588
+        },
+        "HDFCBANK": {
+          "price": 1736.2,
+          "open": 1650.0,
+          "t": 1792983771.6589932
+        },
+        "ICICIBANK": {
+          "price": 1192.5,
+          "open": 1250.0,
+          "t": 1792983771.5554633
+        },
+        "SBIN": {
+          "price": 811.85,
+          "open": 820.0,
+          "t": 1792983771.7629588
+        },
+        "ITC": {
+          "price": 435.05,
+          "open": 470.0,
+          "t": 1792983771.6589932
+        },
+        "LT": {
+          "price": 3631.7,
+          "open": 3600.0,
+          "t": 1792983771.5554633
+        }
+      },
+      "orders": 55436,
+      "rejected": 0,
+      "fills": 59832,
+      "cancels": 5118,
+      "duplicate_refs": 0
+    },
+    "lbs": {
+      "haproxy-1": {
+        "api-1": {
+          "status": "UP",
+          "stot": 30097
+        },
+        "api-2": {
+          "status": "UP",
+          "stot": 30095
+        },
+        "api-3": {
+          "status": "UP",
+          "stot": 30100
+        },
+        "api-4": {
+          "status": "UP",
+          "stot": 30097
+        }
+      },
+      "haproxy-2": {
+        "api-1": {
+          "status": "UP",
+          "stot": 29974
+        },
+        "api-2": {
+          "status": "UP",
+          "stot": 30062
+        },
+        "api-3": {
+          "status": "UP",
+          "stot": 30062
+        },
+        "api-4": {
+          "status": "UP",
+          "stot": 30059
+        }
+      }
+    },
+    "bouncers": {
+      "pgbouncer-1": {
+        "up": true,
+        "cl_active": 2,
+        "cl_waiting": 0,
+        "sv_active": 0,
+        "sv_idle": 2
+      },
+      "pgbouncer-2": {
+        "up": true,
+        "cl_active": 0,
+        "cl_waiting": 0,
+        "sv_active": 0,
+        "sv_idle": 0
+      }
+    },
+    "services": {
+      "router-2": {
+        "service": "router-2",
+        "site": "azure-z2",
+        "role": "standby",
+        "epoch": null,
+        "exchange_ok": null,
+        "lease_error": "",
+        "last_error": "",
+        "counters": {},
+        "log": []
+      },
+      "router-1": {
+        "service": "router-1",
+        "site": "azure-z1",
+        "role": "active",
+        "epoch": 165,
+        "exchange_ok": true,
+        "lease_error": "",
+        "last_error": "",
+        "counters": {
+          "fills": 40160,
+          "expired": 8139,
+          "sent": 37622,
+          "cancelled": 3680,
+          "swept": 4187,
+          "skipped": 13127,
+          "cancels_sent": 2796,
+          "reconciled_found": 3
+        },
+        "log": [
+          {
+            "t": 1792981837.3263574,
+            "text": "reconciled; reading orders.submit from saved positions (epoch 165)"
+          },
+          {
+            "t": 1792981837.2904744,
+            "text": "#1615563 found at the exchange as E60026077-032875: recorded, not resent"
+          },
+          {
+            "t": 1792981837.1146371,
+            "text": "took the lease: ACTIVE with epoch 165"
+          },
+          {
+            "t": 1792981836.867094,
+            "text": "not active any more: stopped reading orders"
+          },
+          {
+            "t": 1792981836.866384,
+            "text": "FENCED: the lease is no longer ours, stopping immediately"
+          },
+          {
+            "t": 1792981528.9281178,
+            "text": "reconciled; reading orders.submit from saved positions (epoch 164)"
+          },
+          {
+            "t": 1792981528.9205751,
+            "text": "#1610530 found at the exchange as E60026077-027842: recorded, not resent"
+          },
+          {
+            "t": 1792981528.839772,
+            "text": "took the lease: ACTIVE with epoch 164"
+          },
+          {
+            "t": 1792981528.7028096,
+            "text": "not active any more: stopped reading orders"
+          },
+          {
+            "t": 1792981528.702018,
+            "text": "FENCED: the lease is no longer ours, stopping immediately"
+          },
+          {
+            "t": 1792981218.5898297,
+            "text": "reconciled; reading orders.submit from saved positions (epoch 164)"
+          },
+          {
+            "t": 1792981218.5704565,
+            "text": "#1605423 found at the exchange as E60026077-022752: recorded, not resent"
+          },
+          {
+            "t": 1792981218.4068596,
+            "text": "took the lease: ACTIVE with epoch 164"
+          },
+          {
+            "t": 1792981217.9220006,
+            "text": "not active any more: stopped reading orders"
+          }
+        ]
+      },
+      "worker-2": {
+        "service": "worker-2",
+        "site": "oracle",
+        "rabbit_ok": true,
+        "db_ok": true,
+        "connected_to": "rabbit-3",
+        "counters": {
+          "reconnects": 31,
+          "notified": 99565,
+          "pruned": 25000,
+          "duplicates_dropped": 1,
+          "db_retries": 1
+        },
+        "last_error": "db: consuming input failed: server conn crashed?\nserver closed the connection unexpectedly\n\tThis probably means the server t",
+        "prune_error": ""
+      },
+      "worker-1": {
+        "service": "worker-1",
+        "site": "azure-z2",
+        "rabbit_ok": true,
+        "db_ok": true,
+        "connected_to": "rabbit-2",
+        "counters": {
+          "reconnects": 30,
+          "notified": 99563,
+          "pruned": 23045,
+          "duplicates_dropped": 1
+        },
+        "last_error": "AMQPConnectionError: ",
+        "prune_error": ""
+      },
+      "relay-2": {
+        "service": "relay-2",
+        "site": "azure-z2",
+        "counters": {
+          "errors": 9,
+          "pruned": 30000,
+          "batch_failed": 2,
+          "orders.events": 98971,
+          "published": 135265,
+          "orders.submit": 36294
+        },
+        "last_ok_age": 0.1,
+        "last_error": "",
+        "prune_error": ""
+      },
+      "relay-1": {
+        "service": "relay-1",
+        "site": "azure-z1",
+        "counters": {
+          "errors": 8,
+          "orders.events": 100161,
+          "published": 137520,
+          "orders.submit": 37359,
+          "pruned": 34144
+        },
+        "last_ok_age": 0.0,
+        "last_error": "",
+        "prune_error": ""
+      },
+      "bridge-2": {
+        "service": "bridge-2",
+        "site": "oracle",
+        "assigned": [
+          3,
+          4,
+          5
+        ],
+        "rabbit_ok": true,
+        "connected_to": "rabbit-3",
+        "counters": {
+          "bridged": 103731
+        },
+        "last_error": ""
+      },
+      "bridge-1": {
+        "service": "bridge-1",
+        "site": "azure-z2",
+        "assigned": [
+          0,
+          1,
+          2
+        ],
+        "rabbit_ok": true,
+        "connected_to": "rabbit-2",
+        "counters": {
+          "bridged": 95400
+        },
+        "last_error": ""
+      },
+      "feed-2": {
+        "service": "feed-2",
+        "site": "oracle",
+        "topic": "marketdata.ticks.lineB",
+        "seq": 81716,
+        "exchange_ok": true,
+        "tick_age": 0.03,
+        "in_flight": 0,
+        "counters": {
+          "ticks": 81716,
+          "published": 81716
+        },
+        "last_error": ""
+      },
+      "feed-1": {
+        "service": "feed-1",
+        "site": "azure-z1",
+        "topic": "marketdata.ticks.lineA",
+        "seq": 81716,
+        "exchange_ok": true,
+        "tick_age": 0.05,
+        "in_flight": 0,
+        "counters": {
+          "ticks": 81699,
+          "published": 81699
+        },
+        "last_error": ""
+      },
+      "api-4": {
+        "service": "api-4",
+        "site": "azure-z2",
+        "counters": {
+          "requests": 72672,
+          "client_gone": 888,
+          "redis_ops": 18410,
+          "logins": 500,
+          "orders": 17187,
+          "cancels": 1842,
+          "rejected": 707,
+          "ws_opened": 483,
+          "ws_messages": 362030,
+          "ws_closed": 481,
+          "no_session": 15,
+          "stale_refused": 8,
+          "db_errors": 2,
+          "duplicates": 6
+        },
+        "ticks": {
+          "ticks": 81690,
+          "dups": 81679,
+          "gap_now": 0.04,
+          "max_gap_60s": 0.61,
+          "symbols": 8
+        },
+        "timings": {
+          "GET /quote": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 0.1,
+              "p50": 0.08,
+              "p95": 0.19,
+              "p99": 0.62,
+              "max": 3.04
+            },
+            "cpu_ms": {
+              "avg": 0.091,
+              "p95": 0.16,
+              "max": 1.78
+            }
+          },
+          "POST /orders": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 113.96,
+              "p50": 21.61,
+              "p95": 556.04,
+              "p99": 2048.22,
+              "max": 2889.87
+            },
+            "cpu_ms": {
+              "avg": 2.936,
+              "p95": 5.04,
+              "max": 23.85
+            }
+          },
+          "POST /login": {
+            "n": 489,
+            "wall_ms": {
+              "avg": 1.8,
+              "p50": 0.64,
+              "p95": 3.37,
+              "p99": 23.07,
+              "max": 133.53
+            },
+            "cpu_ms": {
+              "avg": 0.614,
+              "p95": 0.82,
+              "max": 66.22
+            }
+          },
+          "GET /orders": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 39.82,
+              "p50": 3.94,
+              "p95": 61.03,
+              "p99": 1316.65,
+              "max": 2736.45
+            },
+            "cpu_ms": {
+              "avg": 1.207,
+              "p95": 2.27,
+              "max": 12.79
+            }
+          },
+          "POST /cancel": {
+            "n": 3247,
+            "wall_ms": {
+              "avg": 38.21,
+              "p50": 6.63,
+              "p95": 113.5,
+              "p99": 700.69,
+              "max": 2589.31
+            },
+            "cpu_ms": {
+              "avg": 1.314,
+              "p95": 3.06,
+              "max": 22.97
+            }
+          }
+        },
+        "ws_open": 2,
+        "cpu_seconds": 290.7,
+        "pool": {
+          "size": 8,
+          "available": 8,
+          "waiting": 0
+        }
+      },
+      "api-3": {
+        "service": "api-3",
+        "site": "azure-z2",
+        "counters": {
+          "requests": 72703,
+          "client_gone": 838,
+          "redis_ops": 18336,
+          "logins": 495,
+          "orders": 17028,
+          "rejected": 802,
+          "cancels": 1830,
+          "ws_opened": 485,
+          "ws_messages": 340529,
+          "ws_closed": 484,
+          "no_session": 11,
+          "stale_refused": 7,
+          "db_errors": 2,
+          "duplicates": 3
+        },
+        "ticks": {
+          "ticks": 81716,
+          "dups": 81539,
+          "gap_now": 0.05,
+          "max_gap_60s": 0.2,
+          "symbols": 8
+        },
+        "timings": {
+          "POST /login": {
+            "n": 484,
+            "wall_ms": {
+              "avg": 1.33,
+              "p50": 0.63,
+              "p95": 2.31,
+              "p99": 18.8,
+              "max": 67.86
+            },
+            "cpu_ms": {
+              "avg": 0.524,
+              "p95": 0.77,
+              "max": 23.26
+            }
+          },
+          "GET /quote": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 0.11,
+              "p50": 0.08,
+              "p95": 0.18,
+              "p99": 0.68,
+              "max": 12.97
+            },
+            "cpu_ms": {
+              "avg": 0.088,
+              "p95": 0.16,
+              "max": 2.08
+            }
+          },
+          "POST /orders": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 107.67,
+              "p50": 22.45,
+              "p95": 568.94,
+              "p99": 1642.39,
+              "max": 2864.98
+            },
+            "cpu_ms": {
+              "avg": 3.0,
+              "p95": 5.22,
+              "max": 33.75
+            }
+          },
+          "GET /orders": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 34.35,
+              "p50": 4.0,
+              "p95": 59.36,
+              "p99": 953.99,
+              "max": 2693.53
+            },
+            "cpu_ms": {
+              "avg": 1.211,
+              "p95": 2.29,
+              "max": 14.69
+            }
+          },
+          "POST /cancel": {
+            "n": 3203,
+            "wall_ms": {
+              "avg": 41.3,
+              "p50": 6.65,
+              "p95": 110.35,
+              "p99": 791.13,
+              "max": 4433.66
+            },
+            "cpu_ms": {
+              "avg": 1.311,
+              "p95": 3.03,
+              "max": 22.43
+            }
+          }
+        },
+        "ws_open": 1,
+        "cpu_seconds": 284.4,
+        "pool": {
+          "size": 8,
+          "available": 8,
+          "waiting": 0
+        }
+      },
+      "api-2": {
+        "service": "api-2",
+        "site": "azure-z1",
+        "counters": {
+          "requests": 72697,
+          "client_gone": 795,
+          "redis_ops": 18370,
+          "logins": 525,
+          "orders": 17026,
+          "rejected": 802,
+          "cancels": 1773,
+          "ws_opened": 487,
+          "ws_messages": 316658,
+          "ws_closed": 487,
+          "no_session": 8,
+          "stale_refused": 10,
+          "db_errors": 4,
+          "duplicates": 5
+        },
+        "ticks": {
+          "ticks": 81716,
+          "dups": 81537,
+          "gap_now": 0.04,
+          "max_gap_60s": 0.38,
+          "symbols": 8
+        },
+        "timings": {
+          "POST /login": {
+            "n": 516,
+            "wall_ms": {
+              "avg": 1.37,
+              "p50": 0.64,
+              "p95": 3.6,
+              "p99": 24.46,
+              "max": 41.1
+            },
+            "cpu_ms": {
+              "avg": 0.55,
+              "p95": 0.88,
+              "max": 30.56
+            }
+          },
+          "GET /quote": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 0.11,
+              "p50": 0.08,
+              "p95": 0.18,
+              "p99": 0.59,
+              "max": 18.14
+            },
+            "cpu_ms": {
+              "avg": 0.089,
+              "p95": 0.16,
+              "max": 2.07
+            }
+          },
+          "GET /orders": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 37.04,
+              "p50": 3.91,
+              "p95": 52.63,
+              "p99": 1198.13,
+              "max": 2716.78
+            },
+            "cpu_ms": {
+              "avg": 1.213,
+              "p95": 2.26,
+              "max": 17.53
+            }
+          },
+          "POST /orders": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 117.93,
+              "p50": 22.61,
+              "p95": 616.16,
+              "p99": 2172.73,
+              "max": 3199.48
+            },
+            "cpu_ms": {
+              "avg": 3.008,
+              "p95": 5.21,
+              "max": 306.08
+            }
+          },
+          "POST /cancel": {
+            "n": 3175,
+            "wall_ms": {
+              "avg": 44.63,
+              "p50": 6.66,
+              "p95": 131.81,
+              "p99": 796.3,
+              "max": 4348.03
+            },
+            "cpu_ms": {
+              "avg": 1.333,
+              "p95": 3.06,
+              "max": 65.48
+            }
+          }
+        },
+        "ws_open": 0,
+        "cpu_seconds": 276.4,
+        "pool": {
+          "size": 8,
+          "available": 8,
+          "waiting": 0
+        }
+      },
+      "api-1": {
+        "service": "api-1",
+        "site": "azure-z1",
+        "counters": {
+          "requests": 72599,
+          "client_gone": 868,
+          "redis_ops": 18365,
+          "logins": 509,
+          "orders": 17149,
+          "cancels": 1801,
+          "rejected": 694,
+          "ws_opened": 484,
+          "ws_messages": 338955,
+          "ws_closed": 483,
+          "stale_refused": 5,
+          "no_session": 10,
+          "db_errors": 3,
+          "duplicates": 6
+        },
+        "ticks": {
+          "ticks": 81660,
+          "dups": 81594,
+          "gap_now": 0.04,
+          "max_gap_60s": 0.19,
+          "symbols": 8
+        },
+        "timings": {
+          "POST /login": {
+            "n": 500,
+            "wall_ms": {
+              "avg": 1.47,
+              "p50": 0.64,
+              "p95": 3.06,
+              "p99": 21.64,
+              "max": 98.89
+            },
+            "cpu_ms": {
+              "avg": 0.594,
+              "p95": 0.84,
+              "max": 59.29
+            }
+          },
+          "GET /quote": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 0.11,
+              "p50": 0.08,
+              "p95": 0.18,
+              "p99": 0.6,
+              "max": 14.14
+            },
+            "cpu_ms": {
+              "avg": 0.091,
+              "p95": 0.16,
+              "max": 1.62
+            }
+          },
+          "GET /orders": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 36.93,
+              "p50": 3.92,
+              "p95": 49.85,
+              "p99": 1115.52,
+              "max": 2642.25
+            },
+            "cpu_ms": {
+              "avg": 1.207,
+              "p95": 2.26,
+              "max": 25.99
+            }
+          },
+          "POST /orders": {
+            "n": 5000,
+            "wall_ms": {
+              "avg": 96.73,
+              "p50": 21.13,
+              "p95": 420.97,
+              "p99": 1864.03,
+              "max": 3119.73
+            },
+            "cpu_ms": {
+              "avg": 2.93,
+              "p95": 5.16,
+              "max": 69.17
+            }
+          },
+          "POST /cancel": {
+            "n": 3230,
+            "wall_ms": {
+              "avg": 37.74,
+              "p50": 6.67,
+              "p95": 111.81,
+              "p99": 692.7,
+              "max": 4245.76
+            },
+            "cpu_ms": {
+              "avg": 1.438,
+              "p95": 2.91,
+              "max": 330.0
+            }
+          }
+        },
+        "ws_open": 1,
+        "cpu_seconds": 284.6,
+        "pool": {
+          "size": 8,
+          "available": 8,
+          "waiting": 0
+        }
+      }
+    },
+    "roles": {
+      "pg-1": "QUORUM STANDBY",
+      "pg-2": "LEADER",
+      "pg-3": "QUORUM STANDBY",
+      "etcd-1": "FOLLOWER",
+      "etcd-2": "LEADER",
+      "etcd-3": "FOLLOWER",
+      "kafka-1": "LEADS 7 PARTITIONS",
+      "kafka-2": "LEADS 4 PARTITIONS",
+      "kafka-3": "LEADS 7 PARTITIONS",
+      "rabbit-1": "QUEUE LEADER",
+      "rabbit-2": "QUEUE REPLICA",
+      "rabbit-3": "QUEUE REPLICA",
+      "redis-1": "MASTER",
+      "redis-2": "REPLICA",
+      "redis-3": "REPLICA",
+      "router-2": "STANDBY",
+      "router-1": "ACTIVE"
+    },
+    "flows": [
+      {
+        "from": "traders",
+        "to": "haproxy-1",
+        "rate": 0.0,
+        "kind": "http"
+      },
+      {
+        "from": "traders",
+        "to": "haproxy-2",
+        "rate": 0.0,
+        "kind": "http"
+      },
+      {
+        "from": "kafka-1",
+        "to": "router-1",
+        "rate": 15.0,
+        "kind": "kafka"
+      },
+      {
+        "from": "router-1",
+        "to": "exchange",
+        "rate": 15.0,
+        "kind": "order"
+      },
+      {
+        "from": "exchange",
+        "to": "router-1",
+        "rate": 30.0,
+        "kind": "fill"
+      },
+      {
+        "from": "router-1",
+        "to": "pgbouncer-1",
+        "rate": 45.0,
+        "kind": "db"
+      },
+      {
+        "from": "rabbit-1",
+        "to": "worker-2",
+        "rate": 47.0,
+        "kind": "rabbit"
+      },
+      {
+        "from": "worker-2",
+        "to": "pgbouncer-2",
+        "rate": 47.0,
+        "kind": "db"
+      },
+      {
+        "from": "rabbit-1",
+        "to": "worker-1",
+        "rate": 46.0,
+        "kind": "rabbit"
+      },
+      {
+        "from": "worker-1",
+        "to": "pgbouncer-2",
+        "rate": 46.0,
+        "kind": "db"
+      },
+      {
+        "from": "pgbouncer-2",
+        "to": "relay-2",
+        "rate": 60.99,
+        "kind": "db"
+      },
+      {
+        "from": "relay-2",
+        "to": "kafka-1",
+        "rate": 20.33,
+        "kind": "kafka"
+      },
+      {
+        "from": "relay-2",
+        "to": "kafka-2",
+        "rate": 20.33,
+        "kind": "kafka"
+      },
+      {
+        "from": "relay-2",
+        "to": "kafka-3",
+        "rate": 20.33,
+        "kind": "kafka"
+      },
+      {
+        "from": "pgbouncer-1",
+        "to": "relay-1",
+        "rate": 31.0,
+        "kind": "db"
+      },
+      {
+        "from": "relay-1",
+        "to": "kafka-1",
+        "rate": 10.33,
+        "kind": "kafka"
+      },
+      {
+        "from": "relay-1",
+        "to": "kafka-2",
+        "rate": 10.33,
+        "kind": "kafka"
+      },
+      {
+        "from": "relay-1",
+        "to": "kafka-3",
+        "rate": 10.33,
+        "kind": "kafka"
+      },
+      {
+        "from": "kafka-1",
+        "to": "bridge-2",
+        "rate": 44.0,
+        "kind": "kafka"
+      },
+      {
+        "from": "bridge-2",
+        "to": "rabbit-1",
+        "rate": 44.0,
+        "kind": "rabbit"
+      },
+      {
+        "from": "kafka-1",
+        "to": "bridge-1",
+        "rate": 50.0,
+        "kind": "kafka"
+      },
+      {
+        "from": "bridge-1",
+        "to": "rabbit-1",
+        "rate": 50.0,
+        "kind": "rabbit"
+      },
+      {
+        "from": "exchange",
+        "to": "feed-2",
+        "rate": 18.0,
+        "kind": "tick"
+      },
+      {
+        "from": "feed-2",
+        "to": "kafka-1",
+        "rate": 6.0,
+        "kind": "tick"
+      },
+      {
+        "from": "feed-2",
+        "to": "kafka-2",
+        "rate": 6.0,
+        "kind": "tick"
+      },
+      {
+        "from": "feed-2",
+        "to": "kafka-3",
+        "rate": 6.0,
+        "kind": "tick"
+      },
+      {
+        "from": "exchange",
+        "to": "feed-1",
+        "rate": 18.0,
+        "kind": "tick"
+      },
+      {
+        "from": "feed-1",
+        "to": "kafka-1",
+        "rate": 6.0,
+        "kind": "tick"
+      },
+      {
+        "from": "feed-1",
+        "to": "kafka-2",
+        "rate": 6.0,
+        "kind": "tick"
+      },
+      {
+        "from": "feed-1",
+        "to": "kafka-3",
+        "rate": 6.0,
+        "kind": "tick"
+      },
+      {
+        "from": "kafka-1",
+        "to": "api-4",
+        "rate": 18.0,
+        "kind": "tick"
+      },
+      {
+        "from": "kafka-1",
+        "to": "api-3",
+        "rate": 18.0,
+        "kind": "tick"
+      },
+      {
+        "from": "kafka-1",
+        "to": "api-2",
+        "rate": 18.0,
+        "kind": "tick"
+      },
+      {
+        "from": "kafka-1",
+        "to": "api-1",
+        "rate": 18.0,
+        "kind": "tick"
+      },
+      {
+        "from": "pgbouncer-1",
+        "to": "pg-2",
+        "rate": 0.5,
+        "kind": "db"
+      },
+      {
+        "from": "pgbouncer-2",
+        "to": "pg-2",
+        "rate": 0.5,
+        "kind": "db"
+      },
+      {
+        "from": "redis-1",
+        "to": "redis-2",
+        "rate": 0.3,
+        "kind": "repl"
+      },
+      {
+        "from": "redis-1",
+        "to": "redis-3",
+        "rate": 0.3,
+        "kind": "repl"
+      }
+    ]
+  },
+  "audit": {
+    "by_status": {
+      "CANCELLED": 170745,
+      "EXPIRED": 27804,
+      "FILLED": 1448395,
+      "PENDING": 2685,
+      "SUBMITTED": 883
+    },
+    "outbox_backlog": 1,
+    "outbox_oldest": 0.129442,
+    "events": 34699,
+    "notified": 34699,
+    "notify_missing": 0,
+    "cash_wrong": 0,
+    "positions_wrong": 0,
+    "reserve_wrong": 0,
+    "overfilled": 0,
+    "sent_twice": 0,
+    "exchange_orders": 55436,
+    "fills_exchange": 59742,
+    "fills_missing": 0,
+    "received": 49096,
+    "confirmed": 49096,
+    "lost": 0,
+    "lost_refs": [],
+    "books_wrong": 0,
+    "t": 1792983771.9204805,
+    "ok": true
+  },
+  "traders": {
+    "via:haproxy-1": 70505,
+    "via:haproxy-2": 70854,
+    "quotes": 18284,
+    "received": 49096,
+    "refused_risk": 1059,
+    "lb_failed:haproxy-1": 16,
+    "refused_stale": 30,
+    "lb_failed:haproxy-2": 10,
+    "retries": 3,
+    "received_after_retry": 9,
+    "n": 0
+  },
+  "events": [
+    {
+      "t": 1792983757.87929,
+      "text": "haproxy-2: api-4 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983757.8792472,
+      "text": "haproxy-1: api-4 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983756.8205466,
+      "text": "haproxy-2: api-4 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983756.820506,
+      "text": "haproxy-1: api-4 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983755.2051773,
+      "text": "haproxy-1: api-4 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983753.7716367,
+      "text": "haproxy-1: api-4 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983743.4736488,
+      "text": "haproxy-1: api-2 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983741.7734268,
+      "text": "haproxy-2: api-2 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983741.279654,
+      "text": "haproxy-2: api-2 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983741.2796123,
+      "text": "haproxy-1: api-2 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983733.86815,
+      "text": "haproxy-1: api-4 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983733.4599044,
+      "text": "haproxy-1: api-4 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983728.6868331,
+      "text": "haproxy-1: api-3 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983727.2535832,
+      "text": "haproxy-1: api-2 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983726.6498563,
+      "text": "haproxy-1: api-4 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983726.6498437,
+      "text": "haproxy-1: api-3 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983726.6497717,
+      "text": "haproxy-1: api-2 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983724.5302334,
+      "text": "haproxy-2: api-4 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983724.5301795,
+      "text": "haproxy-1: api-4 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983722.727194,
+      "text": "haproxy-2: api-4 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983718.5785532,
+      "text": "haproxy-1: api-3 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983716.9791489,
+      "text": "haproxy-1: api-3 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983712.5880747,
+      "text": "haproxy-1: api-4 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983711.1312377,
+      "text": "haproxy-2: api-1 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983711.1305764,
+      "text": "haproxy-1: api-2 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983710.521722,
+      "text": "haproxy-2: api-2 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983710.5217106,
+      "text": "haproxy-2: api-1 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983710.5216768,
+      "text": "haproxy-1: api-4 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983710.5197299,
+      "text": "haproxy-1: api-2 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983709.1306663,
+      "text": "haproxy-2: api-2 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983709.125297,
+      "text": "haproxy-1: api-3 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983707.7817674,
+      "text": "haproxy-1: api-3 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983697.9904814,
+      "text": "recovered: active order router is router-1, 2.5 s after router-1 stopped answering",
+      "cls": "good"
+    },
+    {
+      "t": 1792983697.9903555,
+      "text": "active order router: \u2014 \u2192 router-1",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983695.4503946,
+      "text": "active order router: router-1 gone, electing a new one\u2026",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983689.9972918,
+      "text": "haproxy-2: api-1 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983688.5337996,
+      "text": "haproxy-2: api-1 marked DOWN 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983688.5337014,
+      "text": "recovered: active order router is router-1, 0.4 s after router-1 stopped answering",
+      "cls": "good"
+    },
+    {
+      "t": 1792983688.5336025,
+      "text": "active order router: \u2014 \u2192 router-1",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983688.1463616,
+      "text": "haproxy-2: api-1 marked DOWN by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983688.146313,
+      "text": "haproxy-1: api-4 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983688.144898,
+      "text": "active order router: router-1 gone, electing a new one\u2026",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983685.930276,
+      "text": "haproxy-2: api-1 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983685.9302337,
+      "text": "haproxy-1: api-4 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983596.0426784,
+      "text": "haproxy-1: api-4 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983595.4755454,
+      "text": "haproxy-1: api-4 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983590.5066495,
+      "text": "haproxy-1: api-3 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983589.8662174,
+      "text": "haproxy-1: api-3 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983423.094349,
+      "text": "haproxy-2: api-1 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983421.9957395,
+      "text": "haproxy-2: api-1 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983397.8505466,
+      "text": "haproxy-2: api-1 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983396.0331402,
+      "text": "haproxy-2: api-1 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983390.982386,
+      "text": "haproxy-2: api-3 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983389.1030056,
+      "text": "haproxy-2: api-3 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983368.9971774,
+      "text": "haproxy-1: api-2 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983367.767242,
+      "text": "haproxy-1: api-2 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983364.7805505,
+      "text": "haproxy-2: api-1 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792983363.7737691,
+      "text": "haproxy-2: api-1 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792983345.7966447,
+      "text": "pretend traders: 0",
+      "cls": "info"
+    },
+    {
+      "t": 1792983335.5297124,
+      "text": "pretend traders: 0",
+      "cls": "info"
+    },
+    {
+      "t": 1792983335.5116608,
+      "text": "pretend traders: 0",
+      "cls": "info"
+    },
+    {
+      "t": 1792983182.1361558,
+      "text": "backup: incr backup of pg-2 finished in 320 s (schedule: every 30 min) \u2192 backup repository",
+      "cls": "good"
+    },
+    {
+      "t": 1792982836.9327402,
+      "text": "recovered: active order router is router-1, 0.9 s after router-1 stopped answering",
+      "cls": "good"
+    },
+    {
+      "t": 1792982836.9326308,
+      "text": "active order router: \u2014 \u2192 router-1",
+      "cls": "ok"
+    },
+    {
+      "t": 1792982836.0193808,
+      "text": "active order router: router-1 gone, electing a new one\u2026",
+      "cls": "warn"
+    },
+    {
+      "t": 1792982835.941941,
+      "text": "pretend traders: 0",
+      "cls": "info"
+    },
+    {
+      "t": 1792982716.9416165,
+      "text": "haproxy-2: api-1 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792982715.8410244,
+      "text": "haproxy-2: api-2 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792982715.8410182,
+      "text": "haproxy-2: api-1 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792982715.8409941,
+      "text": "haproxy-1: api-4 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792982715.840958,
+      "text": "haproxy-1: api-2 marked UP by health check",
+      "cls": "ok"
+    },
+    {
+      "t": 1792982714.8115044,
+      "text": "haproxy-2: api-2 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792982714.811483,
+      "text": "haproxy-1: api-4 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792982714.8112967,
+      "text": "haproxy-1: api-2 marked UP 1/2 by health check",
+      "cls": "warn"
+    },
+    {
+      "t": 1792982454.1517522,
+      "text": "recovered: active order router is router-1, 0.5 s after router-1 stopped answering",
+      "cls": "good"
+    },
+    {
+      "t": 1792982454.151698,
+      "text": "active order router: \u2014 \u2192 router-1",
+      "cls": "ok"
+    },
+    {
+      "t": 1792982453.6849365,
+      "text": "active order router: router-1 gone, electing a new one\u2026",
+      "cls": "warn"
+    },
+    {
+      "t": 1792981837.7900767,
+      "text": "recovered: active order router is router-1, 1.3 s after router-1 stopped answering",
+      "cls": "good"
+    },
+    {
+      "t": 1792981837.7900178,
+      "text": "active order router: \u2014 \u2192 router-1",
+      "cls": "ok"
+    },
+    {
+      "t": 1792981836.4409986,
+      "text": "active order router: router-1 gone, electing a new one\u2026",
+      "cls": "warn"
+    }
+  ],
+  "pending_recovery": [],
+  "try": null,
+  "autoheal": true,
+  "zones_down": [],
+  "backups": {
+    "stanza": "ok",
+    "backups": [
+      {
+        "label": "20261025-041220F_20261025-051707I",
+        "type": "incr",
+        "start": 1792905427,
+        "stop": 1792905563,
+        "size": 1762638107,
+        "repo_size": 307799836
+      },
+      {
+        "label": "20261025-041220F_20261025-054932I",
+        "type": "incr",
+        "start": 1792907372,
+        "stop": 1792907494,
+        "size": 1767610653,
+        "repo_size": 309500261
+      },
+      {
+        "label": "20261025-041220F_20261025-062140I",
+        "type": "incr",
+        "start": 1792909300,
+        "stop": 1792909526,
+        "size": 1775106333,
+        "repo_size": 311735008
+      },
+      {
+        "label": "20261025-041220F_20261025-201601I",
+        "type": "incr",
+        "start": 1792959361,
+        "stop": 1792959643,
+        "size": 1756706703,
+        "repo_size": 306894275
+      },
+      {
+        "label": "20261025-041220F_20261026-020958I",
+        "type": "incr",
+        "start": 1792980598,
+        "stop": 1792981056,
+        "size": 1786648463,
+        "repo_size": 314624432
+      },
+      {
+        "label": "20261025-041220F_20261026-024742I",
+        "type": "incr",
+        "start": 1792982862,
+        "stop": 1792983181,
+        "size": 1843197839,
+        "repo_size": 328733632
+      }
+    ],
+    "archive": {
+      "archived": 120,
+      "last_wal": "0000001700000010000000DD",
+      "age": 28.8,
+      "failed": 0,
+      "last_failed": null
+    },
+    "running": null,
+    "last_error": "",
+    "checked": 1792983768.4805238,
+    "wal_range": [
+      "000000100000000A00000016",
+      "0000001700000010000000DD"
+    ]
+  },
+  "layout": "containers",
+  "zone_containers": {
+    "azure-z1": "hal-azure-z1",
+    "azure-z2": "hal-azure-z2",
+    "oracle": "hal-oracle"
+  }
+}

@@ -1,0 +1,96 @@
+# HA Trading Lab, "one container per zone" layout. Each pretend cloud zone is ONE container (a zone machine)
+# running all of that zone's services under supervisord. Switch a zone off and everything in it is gone at once.
+#
+#   docker compose -f docker-compose.zones.yml up -d --build        → dashboard http://127.0.0.1:9700
+#   docker stop hal-oracle          (or docker kill / pause / network disconnect)   → a whole zone fails
+#   docker start hal-oracle                                          → it comes back and rejoins
+#   docker compose -f docker-compose.zones.yml down [-v]
+#
+# Inside a zone, each service keeps its own network name (pg-1, kafka-1, api-2 …) as an alias of the zone
+# container, so services find each other exactly as in the many-container layout.
+# The exchange (NSE, simulated) and control (traders + dashboard) are outside the zones.
+name: ha-zones
+
+x-zone: &zone
+  build: {context: ., dockerfile: zone/Dockerfile}
+  image: ha-zone:local
+  restart: "no"                   # a zone you switch off stays off until you start it
+  stop_grace_period: 25s
+  dns_search: [.]
+  dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+  depends_on: {control: {condition: service_started}}
+
+services:
+  azure-z1:
+    <<: *zone
+    container_name: hal-azure-z1
+    hostname: rabbit-1            # RabbitMQ's node name is rabbit@rabbit-1
+    environment: {ZONE: azure-z1}
+    labels: {lab.site: azure-z1, lab.kind: zone}
+    mem_limit: 1200m
+    volumes: [azure-z1:/data, backup-repo:/backup]
+    networks:
+      backbone:
+        aliases: [haproxy-1, api-1, api-2, redis-1, sentinel-1, pgbouncer-1, pg-1, etcd-1, kafka-1, rabbit-1,
+                  relay-1, router-1, feed-1]
+
+  azure-z2:
+    <<: *zone
+    container_name: hal-azure-z2
+    hostname: rabbit-2
+    environment: {ZONE: azure-z2}
+    labels: {lab.site: azure-z2, lab.kind: zone}
+    mem_limit: 1200m
+    volumes: [azure-z2:/data, backup-repo:/backup]
+    networks:
+      backbone:
+        aliases: [haproxy-2, api-3, api-4, redis-2, sentinel-2, pgbouncer-2, pg-2, etcd-2, kafka-2, rabbit-2,
+                  relay-2, router-2, bridge-1, worker-1]
+
+  oracle:
+    <<: *zone
+    container_name: hal-oracle
+    hostname: rabbit-3
+    environment: {ZONE: oracle}
+    labels: {lab.site: oracle, lab.kind: zone}
+    mem_limit: 1000m
+    volumes: [oracle:/data, backup-repo:/backup]
+    networks:
+      backbone:
+        aliases: [redis-3, sentinel-3, pg-3, etcd-3, kafka-3, rabbit-3, feed-2, bridge-2, worker-2]
+
+  exchange:                       # SIMULATED exchange, lab only (never IBKR, never a real market)
+    build: ./app
+    image: ha-lab-app:local
+    container_name: hal-exchange
+    restart: unless-stopped
+    mem_limit: 256m
+    networks: [backbone]
+    command: [python, -u, exchange.py, --host, 0.0.0.0, --port, "9390"]
+    labels: {lab.site: nse, lab.kind: exchange}
+
+  control:                        # traders, audit, chaos buttons and the dashboard (the "ops" laptop)
+    image: ha-lab-app:local
+    container_name: hal-control
+    restart: unless-stopped
+    mem_limit: 320m
+    networks: [backbone]
+    dns_search: [.]
+    dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+    command: [python, -u, control.py]
+    environment: {SERVICE: control, SITE: ops, PGBOUNCERS: "pgbouncer-1,pgbouncer-2", DB_USER: app, DB_PASSWORD: apppass,
+                  LAYOUT: zones, PROJECT: ha-zones, NETWORK: ha-zones-backbone}
+    labels: {lab.site: ops, lab.kind: control}
+    ports: ["127.0.0.1:9700:9700"]
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+    depends_on: [exchange]
+
+networks:
+  backbone:
+    name: ha-zones-backbone
+
+volumes:
+  azure-z1: {}
+  azure-z2: {}
+  oracle: {}
+  backup-repo: {}

@@ -1,0 +1,41 @@
+[
+  {
+    "label": "stalled-before",
+    "mode": "stall",
+    "port": 8443,
+    "target_api": "api-2",
+    "kill_at_ms": 245.89999999850988,
+    "recovery_ms": null,
+    "new_api": null,
+    "events": [
+      {
+        "type": "connect",
+        "id": 0,
+        "t": 104
+      },
+      {
+        "type": "open",
+        "id": 0,
+        "t": 171.29999999701977
+      },
+      {
+        "type": "first-tick",
+        "id": 0,
+        "t": 185.19999999552965,
+        "server": "api-2"
+      },
+      {
+        "type": "close",
+        "id": 0,
+        "t": 284.5,
+        "code": 1005
+      },
+      {
+        "type": "connect",
+        "id": 1,
+        "t": 1302
+      }
+    ],
+    "status": "reconnecting..."
+  }
+]

@@ -1,0 +1,5 @@
+2026-10-26 10:45:02.425 P00   INFO: check command begin 2.59.3: --exec-id=215899-add98157 --log-level-console=info --log-level-file=off --pg1-path=/var/lib/postgresql/data/pgdata --pg1-port=5432 --pg1-socket-path=/var/run/postgresql --repo1-path=/backup/repo --stanza=tradelab
+2026-10-26 10:45:02.460 P00   INFO: check repo1 configuration (primary)
+2026-10-26 10:45:02.503 P00   INFO: check repo1 archive for WAL (primary)
+2026-10-26 10:45:02.604 P00   INFO: WAL segment 0000001700000012000000C8 successfully archived to '/backup/repo/archive/tradelab/16-1/0000001700000012/0000001700000012000000C8-68c172baacc389cfe83a651ad1af76556d87547c.lz4' on repo1
+2026-10-26 10:45:02.604 P00   INFO: check command end: completed successfully (181ms)

@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HA Trading Lab</title>
+<style>
+:root{--bg:#f3f5f9;--panel:#fff;--panel2:#f8fafc;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;
+  --ok:#16a34a;--ok-bg:#dcfce7;--bad:#dc2626;--bad-bg:#fee2e2;--warn:#d97706;--warn-bg:#fef3c7;--info:#2563eb;--info-bg:#dbeafe;
+  --az:#0078d4;--az-bg:#eff6ff;--oci:#c74634;--oci-bg:#fff5f3;--ext:#475569;
+  --http:#2563eb;--db:#0d9488;--redis:#dc2626;--kafka:#ea580c;--tick:#ca8a04;--order:#be123c;--fill:#16a34a;--rabbit:#7c3aed;--repl:#64748b;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;--mono:"Cascadia Mono",Consolas,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--panel:#111a2e;--panel2:#16213a;--ink:#e2e8f0;--muted:#94a3b8;--line:#25324d;
+  --ok-bg:#12351f;--bad-bg:#3b1414;--warn-bg:#3a2a0b;--info-bg:#132a52;--az-bg:#0f2240;--oci-bg:#2e1714}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.45 var(--sans)}
+.wrap{max-width:1680px;margin:0 auto;padding:12px 16px 40px}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:10px}
+h1{font-size:19px;margin:0}
+.sub{color:var(--muted);font-size:12px}
+.spacer{flex:1}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;background:var(--panel);border:1px solid var(--line);font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block}
+.dot.ok{background:var(--ok)}.dot.bad{background:var(--bad)}.dot.warn{background:var(--warn)}
+button{font:600 12px var(--sans);padding:5px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+button:hover{border-color:var(--info)}button.danger{color:var(--bad)}button.good{color:var(--ok)}
+button:disabled{opacity:.45;cursor:default}
+input[type=range]{width:140px;vertical-align:middle}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.card h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.tiles{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 10px;min-width:0}
+.tile span{display:block;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile b{font:700 19px var(--mono)}
+.tile.good b{color:var(--ok)}.tile.stale{opacity:.5;border-style:dashed}
+.alert{padding:10px 14px;border-radius:12px;background:var(--bad-bg);border:2px solid var(--bad);color:var(--ink);margin-bottom:10px;font-size:13px}.tile.bad{background:var(--bad-bg);border-color:var(--bad)}.tile.bad b{color:var(--bad)}
+.boardwrap{position:relative}
+.board{display:grid;grid-template-columns:118px 104px repeat(3,minmax(0,1fr)) 116px;gap:0;position:relative}
+.board>div{padding:5px 6px;border-bottom:1px dashed var(--line);min-height:44px;display:flex;flex-wrap:wrap;gap:6px;align-content:center;align-items:center}
+.board .lay{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;line-height:1.25}
+.board .hd{border-bottom:none;flex-direction:column;align-items:stretch;padding:8px 8px 6px;border-radius:12px 12px 0 0}
+.hd b{font-size:13px}.hd small{color:var(--muted)}
+.hd .row{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.hd .row button{padding:2px 7px;font-size:11px}
+.zone-azure-z1,.zone-azure-z2{background:var(--az-bg)}.zone-oracle{background:var(--oci-bg)}
+.hd.zone-azure-z1,.hd.zone-azure-z2{border-top:4px solid var(--az)}.hd.zone-oracle{border-top:4px solid var(--oci)}
+.hd.ext{border-top:4px solid var(--ext);background:var(--panel2)}
+.zone-down{outline:3px solid var(--bad);outline-offset:-3px}
+.chip{position:relative;z-index:2;background:var(--panel);border:1.5px solid var(--line);border-left:5px solid var(--ok);border-radius:9px;padding:3px 8px 4px;min-width:104px;cursor:pointer;user-select:none}
+.chip b{font:700 12px var(--mono);display:block}
+.chip .role{display:inline-block;font:700 9.5px var(--sans);letter-spacing:.03em;padding:0 5px;border-radius:99px;background:var(--panel2);color:var(--muted);border:1px solid var(--line);white-space:nowrap}
+.chip .role.lead{background:var(--info);color:#fff;border-color:var(--info)}
+.chip .role.warnr{background:var(--warn-bg);color:var(--warn);border-color:var(--warn)}
+.chip small{display:block;color:var(--muted);font-size:10.5px;white-space:nowrap;max-width:170px;overflow:hidden;text-overflow:ellipsis}
+.chip.exited,.chip.dead{border-left-color:var(--bad);background:var(--bad-bg);opacity:.85}
+.chip.paused{border-left-color:var(--warn);background:var(--warn-bg)}
+.chip.cut{border-left-color:var(--warn);border-style:dashed}
+.chip.sel{box-shadow:0 0 0 2px var(--info)}
+.chip.flash{animation:fl .6s}
+@keyframes fl{0%{box-shadow:0 0 0 4px var(--info)}100%{box-shadow:none}}
+.chip.ext{border-left-color:var(--ext)}
+svg#flow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;overflow:visible}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0 0;min-height:32px}
+.actions .who{font-weight:700}
+.grid2{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:12px;margin-top:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;color:var(--muted);font-weight:600;font-size:11px;padding:4px 6px;border-bottom:1px solid var(--line)}
+td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+td.m,.m{font-family:var(--mono);font-size:11.5px}
+.badge{display:inline-block;padding:0 7px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap}
+.badge.ok{background:var(--ok-bg);color:var(--ok)}.badge.bad{background:var(--bad-bg);color:var(--bad)}
+.badge.warn{background:var(--warn-bg);color:var(--warn)}.badge.info{background:var(--info-bg);color:var(--info)}
+.tq{display:inline-block;padding:0 6px;margin:1px 3px 1px 0;border-radius:99px;font-size:10.5px;font-weight:700;color:#fff;background:var(--tc);white-space:nowrap}
+.how{color:var(--muted);font-size:11.5px;margin-top:2px}
+.evs{list-style:none;margin:0;padding:0;max-height:430px;overflow:auto;font-size:12px}
+.evs li{padding:3px 0 3px 8px;border-left:3px solid var(--line);margin-bottom:2px}
+.evs li.bad{border-color:var(--bad)}.evs li.ok{border-color:var(--info)}.evs li.good{border-color:var(--ok);font-weight:700;color:var(--ok)}
+.evs li.warn{border-color:var(--warn)}
+.evs .t{font-family:var(--mono);color:var(--muted);font-size:11px;margin-right:6px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11px;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.parts{display:flex;gap:3px;flex-wrap:wrap}
+.parts span{font:600 10.5px var(--mono);padding:1px 4px;border-radius:5px;background:var(--panel2);border:1px solid var(--line)}
+.parts span.under{background:var(--warn-bg);border-color:var(--warn)}
+.note{color:var(--muted);font-size:11.5px;margin:6px 0 0}
+.boot{padding:10px 14px;border-radius:12px;background:var(--warn-bg);border:1px solid var(--warn);margin-bottom:10px;font-weight:600}
+@media (max-width:1200px){.grid2,.grid3{grid-template-columns:1fr}.tiles{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media (max-width:900px){.board{grid-template-columns:90px repeat(3,minmax(0,1fr))}.board .ext-col{display:none}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><h1>HA Trading Lab · live</h1>
+  <div class="sub">Real PostgreSQL + Patroni + etcd, PgBouncer, HAProxy, Kafka (KRaft), RabbitMQ (quorum queue), Redis + Sentinel. Three pretend clouds on this PC. The exchange is simulated (lab only; never IBKR).</div></div>
+  <div class="spacer"></div>
+  <span class="pill"><span class="dot" id="upDot"></span><span id="upTxt">connecting…</span></span>
+  <span class="pill">traders <b id="trN">-</b><input type="range" id="trR" min="0" max="200" step="5"></span>
+  <label class="pill" title="Like Kubernetes: a crashed container is started again after 15 s. A lost zone stays down until Zone up."><input type="checkbox" id="autoheal" style="margin:0"> auto-heal</label>
+  <button id="backupNow" title="Full pgBackRest backup of the current PostgreSQL leader">Backup now</button>
+  <button id="restore" class="good">Restore everything</button>
+</header>
+<div class="boot" id="boot" hidden></div>
+<div class="alert" id="alert" hidden></div>
+
+<div class="tiles" id="tiles"></div>
+
+<div class="card">
+  <div class="boardwrap" id="bw"><div class="board" id="board"></div><svg id="flow"></svg></div>
+  <div class="actions" id="actions"><span class="note">Click any box to break it: Kill (crash), Pause (freeze), Cut network, then Start / Heal. Each zone header can take the whole zone down.</span></div>
+  <div class="legend">
+    <span><i style="background:var(--http)"></i>HTTP request</span><span><i style="background:var(--db)"></i>SQL (via PgBouncer)</span>
+    <span><i style="background:var(--repl)"></i>replication</span><span><i style="background:var(--redis)"></i>session (Redis)</span>
+    <span><i style="background:var(--kafka)"></i>Kafka message</span><span><i style="background:var(--tick)"></i>price tick</span>
+    <span><i style="background:var(--order)"></i>order → exchange</span><span><i style="background:var(--fill)"></i>fill ← exchange</span>
+    <span><i style="background:var(--rabbit)"></i>RabbitMQ message</span>
+  </div>
+</div>
+
+<div class="grid2">
+  <section class="card">
+    <h2>When something fails: what happens and how it recovers</h2>
+    <table><thead><tr><th>If this fails</th><th>Traders notice</th><th>How it recovers</th><th>Now</th><th></th></tr></thead><tbody id="fails"></tbody></table>
+    <p class="note">"Try it" really kills that process (docker kill = SIGKILL), lets the system recover on its own, then starts it again 25 s later. The tiles above must stay at 0 lost, 0 sent twice, 0 fills missing, 0 books wrong. Not drilled: the exchange itself (ticks would stop).</p>
+  </section>
+  <section class="card">
+    <h2>What just happened <small id="evSub"></small></h2>
+    <ul class="evs" id="events"></ul>
+  </section>
+</div>
+
+<div class="grid3">
+  <section class="card"><h2>PostgreSQL · Patroni · PgBouncer</h2><div id="dPg"></div></section>
+  <section class="card"><h2>Kafka partitions (leader · in-sync replicas)</h2><div id="dKafka"></div></section>
+  <section class="card"><h2>Prices: ticks never stop</h2><div id="dTicks"></div></section>
+  <section class="card"><h2>Order router (lease · fencing)</h2><div id="dRouter"></div></section>
+  <section class="card"><h2>RabbitMQ · Redis · HAProxy</h2><div id="dMisc"></div></section>
+  <section class="card"><h2>Orders &amp; audit</h2><div id="dAudit"></div></section>
+  <section class="card"><h2>Backups · point-in-time recovery (pgBackRest)</h2><div id="dBackup"></div></section>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const api=(p,b)=>fetch(p,b===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(r=>r.json());
+const fmtT=t=>new Date(t*1000).toLocaleTimeString([],{hour12:false});
+const SITE_COLS=['azure-z1','azure-z2','oracle'];
+const LAYERS=[
+ ['Edge<br>load balancers',{'azure-z1':['haproxy-1'],'azure-z2':['haproxy-2']},'traders',null],
+ ['API servers',{'azure-z1':['api-1','api-2'],'azure-z2':['api-3','api-4']},null,null],
+ ['Sessions<br>Redis + Sentinel',{'azure-z1':['redis-1','sentinel-1'],'azure-z2':['redis-2','sentinel-2'],'oracle':['redis-3','sentinel-3']},null,null],
+ ['Connection pools<br>PgBouncer',{'azure-z1':['pgbouncer-1'],'azure-z2':['pgbouncer-2']},null,null],
+ ['PostgreSQL<br>+ Patroni',{'azure-z1':['pg-1'],'azure-z2':['pg-2'],'oracle':['pg-3']},null,null],
+ ['etcd<br>(the vote)',{'azure-z1':['etcd-1'],'azure-z2':['etcd-2'],'oracle':['etcd-3']},null,null],
+ ['Kafka<br>(KRaft)',{'azure-z1':['kafka-1'],'azure-z2':['kafka-2'],'oracle':['kafka-3']},null,null],
+ ['RabbitMQ<br>(quorum queue)',{'azure-z1':['rabbit-1'],'azure-z2':['rabbit-2'],'oracle':['rabbit-3']},null,null],
+ ['Workers',{'azure-z1':['relay-1','router-1','feed-1'],'azure-z2':['relay-2','router-2','bridge-1','worker-1'],'oracle':['feed-2','bridge-2','worker-2']},null,'exchange']];
+const COLORS={http:'--http',db:'--db',redis:'--redis',kafka:'--kafka',tick:'--tick',order:'--order',fill:'--fill',rabbit:'--rabbit',repl:'--repl'};
+let S=null, sel=null, sites={};
+
+// ---------------------------------------------------------------- board
+function buildBoard(){
+  let h='<div class="lay"></div><div class="hd ext ext-col"><b>Internet</b><small>pretend traders</small></div>';
+  const Z=S&&S.layout==='zones';
+  for(const s of SITE_COLS)h+=`<div class="hd zone-${s}" id="hd-${s}"><b>${esc(sites[s]||s)}</b><small id="hds-${s}"></small><div class="row">`+
+    (Z?`<button class="danger" data-site="${s}:down" title="docker kill: the whole machine loses power">Power off</button><button class="danger" data-site="${s}:stop" title="docker stop: clean shutdown of every service">Shut down</button><button class="danger" data-site="${s}:pause" title="docker pause: every process frozen">Freeze</button><button class="danger" data-site="${s}:cut" title="docker network disconnect: machine isolated">Cut network</button><button class="good" data-site="${s}:heal">Start / Heal</button>`
+      :`<button class="danger" data-site="${s}:down">Zone down</button><button data-site="${s}:up">Zone up</button><button class="danger" data-site="${s}:cut">Cut network</button><button data-site="${s}:heal">Heal</button>`)+`</div></div>`;
+  h+='<div class="hd ext ext-col"><b>NSE</b><small>simulated exchange (lab only)</small></div>';
+  for(const [label,cells,left,right] of LAYERS){
+    h+=`<div class="lay">${label}</div><div class="ext-col">${left==='traders'?'<div class="chip ext" id="c-traders"><b>traders</b><small id="trSmall"></small></div>':''}</div>`;
+    for(const s of SITE_COLS)h+=`<div class="zone-${s}">${(cells[s]||[]).map(n=>`<div class="chip" id="c-${n}" data-n="${n}"><b>${n}</b><span class="role" id="r-${n}">…</span><small id="m-${n}"></small></div>`).join('')}</div>`;
+    h+=`<div class="ext-col">${right==='exchange'?'<div class="chip ext" id="c-exchange"><b>exchange</b><small id="exSmall"></small></div>':''}</div>`}
+  $('board').innerHTML=h;
+  $('board').querySelectorAll('.chip[data-n]').forEach(c=>c.onclick=()=>{sel=c.dataset.n;renderActions();renderBoard()});
+  $('board').querySelectorAll('[data-site]').forEach(b=>b.onclick=()=>{const [s,a]=b.dataset.site.split(':');
+    if(a==='down'&&!confirm(`Take ${sites[s]} down? Every service in that zone dies at once.`))return;api('/api/site',{site:s,action:a}).then(r=>{if(r&&r.error)alert(r.error)})})}
+function renderActions(){
+  if(!sel||!S){return}
+  const c=S.status.containers[sel]||{}, role=S.status.roles[sel]||'';
+  const st=c.state||'?';
+  $('actions').innerHTML=`<span class="who">${esc(sel)}</span><span class="badge ${st==='running'?'ok':'bad'}">${esc(st)}</span>${role?`<span class="badge info">${esc(role)}</span>`:''}
+    <span class="note" style="margin:0 6px">${esc(sites[c.site]||c.site||'')}</span>
+    <button class="danger" data-a="kill">Kill (crash)</button><button class="danger" data-a="stop">Stop (graceful)</button>
+    <button class="danger" data-a="pause">Pause (freeze)</button>${S.layout==='zones'?'':'<button class="danger" data-a="cut">Cut network</button>'}
+    <button class="good" data-a="start">Start / Heal</button><button class="good" data-a="unpause">Unpause</button>`;
+  $('actions').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>api('/api/chaos',{target:sel,action:b.dataset.a}).then(r=>{if(r.error)alert(r.error)}))}
+function metric(n,kind){
+  const st=S.status, sv=(st.services||{})[n]||{}, c=sv.counters||{};
+  if(kind==='haproxy'){const b=st.lbs[n]||{};const up=Object.values(b).filter(x=>x.status==='UP').length;return Object.keys(b).length?`${up}/${Object.keys(b).length} APIs up`:''}
+  if(kind==='api'){const t=sv.ticks||{};return `orders ${c.orders||0} · tick gap ${t.gap_now??'-'}s`}
+  if(kind==='pgbouncer'){const b=st.bouncers[n]||{};return b.up?`clients ${b.cl_active} · waiting ${b.cl_waiting}`:'not answering'}
+  if(kind==='postgres'){const m=((st.patroni||{}).members||[]).find(x=>x.name===n);if(!m)return '';
+    const lag=typeof m.lag==='number'?(m.lag<1024?m.lag+' B':(m.lag/1048576).toFixed(1)+' MB'):m.lag;
+    if(m.role!=='leader'&&m.state!=='streaming')return `⚠ not streaming · tl ${m.timeline??'-'} · ${lag??'?'} behind`;
+    return `${m.state} · tl ${m.timeline??'-'}${m.role!=='leader'&&lag!=null?` · lag ${lag}`:''}`}
+  if(kind==='redis'){const r=((st.redis||{}).nodes||{})[n]||{};return r.up?(r.role==='master'?`${r.replicas} replicas`:`link ${r.link||'-'}`):''}
+  if(kind==='sentinel'){return ((st.redis||{}).sentinels||{})[n]?'watching':''}
+  if(kind==='rabbitmq'){const q=((st.rabbit||{}).queue)||{};return q.leader===n?`ready ${q.ready} · unacked ${q.unacked}`:''}
+  if(kind==='kafka'){return ''}
+  if(kind==='relay')return `published ${c.published||0}${sv.last_error?' · ⚠':''}`;
+  if(kind==='router')return sv.epoch?`epoch ${sv.epoch} · sent ${c.sent||0}`:`standby`;
+  if(kind==='feed')return `ticks ${c.published||0}${sv.exchange_ok===false?' · exch ⚠':''}`;
+  if(kind==='bridge')return `partitions [${(sv.assigned||[]).join(',')}]`;
+  if(kind==='worker')return `notified ${c.notified||0}`;
+  if(kind==='etcd')return '';
+  return ''}
+function renderBoard(){
+  const st=S.status, C=st.containers||{}, R=st.roles||{};
+  for(const n in C){const el=$('c-'+n);if(!el||!$('r-'+n))continue;const c=C[n];
+    el.className='chip '+(c.state==='running'?'':c.state)+(sel===n?' sel':'');
+    let role=c.state==='running'?(R[n]||(c.kind==='router'?'STANDBY':'')):c.state.toUpperCase();
+    if(c.kind==='postgres'&&c.state==='running'){const m=((st.patroni||{}).members||[]).find(x=>x.name===n);
+      if(m&&m.role!=='leader'&&m.state!=='streaming')role='STALE · NOT STREAMING'}
+    const r=$('r-'+n);r.textContent=role||c.kind;r.className='role'+(/LEADER|MASTER|ACTIVE/.test(role)?' lead':/OLD|EXITED|CUT|PAUSED|RECONCILING|STALE/.test(role)?' warnr':'');
+    $('m-'+n).textContent=c.state==='running'?metric(n,c.kind):c.status_text}
+  for(const s of SITE_COLS){const all=Object.values(C).filter(c=>c.site===s&&c.kind!=='zone'), up=all.filter(c=>c.state==='running').length;
+    const zc=C['zone:'+s];
+    $('hds-'+s).textContent=zc?`container ${zc.container}: ${zc.state.toUpperCase()} · ${up}/${all.length} services running`:`${up}/${all.length} running`;
+    document.querySelectorAll('.zone-'+s).forEach(e=>e.classList.toggle('zone-down',all.length&&up===0))}
+  const T=S.traders||{};$('trSmall').textContent=`${T.n} traders`;
+  const X=st.exchange||{};$('exSmall').textContent=X.tick_seq?`ticks #${X.tick_seq} · orders ${X.orders}`:'';
+  if(sel)renderActions()}
+
+// ---------------------------------------------------------------- moving dots
+const flowSvg=$('flow');const dots=[];let acc={};
+function center(n){const el=$('c-'+n);if(!el)return null;const b=el.getBoundingClientRect(),w=$('bw').getBoundingClientRect();
+  if(!b.width)return null;return {x:b.left-w.left+b.width/2,y:b.top-w.top+b.height/2}}
+let lastF=performance.now();
+function frame(now){
+  const dt=Math.min(0.1,(now-lastF)/1000);lastF=now;
+  if(S&&S.status&&S.status.flows&&document.visibilityState==='visible'){
+    for(const f of S.status.flows){const k=f.from+'>'+f.to;const r=Math.min(6,f.rate>0?Math.max(0.5,f.rate*0.35):0);
+      acc[k]=(acc[k]||0)+dt*r;
+      while(acc[k]>=1&&dots.length<400){acc[k]-=1;const a=center(f.from),b=center(f.to);if(!a||!b)break;
+        const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r',f.kind==='repl'?3:3.6);
+        c.setAttribute('fill',`var(${COLORS[f.kind]||'--http'})`);c.setAttribute('stroke','var(--panel)');c.setAttribute('stroke-width','1');
+        flowSvg.appendChild(c);dots.push({c,a,b,t0:now,dur:900+Math.random()*250,bend:(Math.random()-.5)*40})}}}
+  for(let i=dots.length-1;i>=0;i--){const d=dots[i],t=(now-d.t0)/d.dur;if(t>=1){d.c.remove();dots.splice(i,1);continue}
+    const mx=(d.a.x+d.b.x)/2+d.bend,my=(d.a.y+d.b.y)/2-d.bend/2,u=1-t;
+    d.c.setAttribute('cx',u*u*d.a.x+2*u*t*mx+t*t*d.b.x);d.c.setAttribute('cy',u*u*d.a.y+2*u*t*my+t*t*d.b.y)}
+  requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+function drawLinks(){const st=S.status;if(!st.flows)return;
+  flowSvg.querySelectorAll('path').forEach(p=>p.remove());
+  const seen=new Set();
+  for(const f of st.flows){const k=[f.from,f.to].sort().join('|');if(seen.has(k))continue;seen.add(k);const a=center(f.from),b=center(f.to);if(!a||!b)continue;
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',`M${a.x} ${a.y} L${b.x} ${b.y}`);
+    p.setAttribute('stroke',`var(${COLORS[f.kind]||'--http'})`);p.setAttribute('stroke-opacity','.13');p.setAttribute('stroke-width','2');p.setAttribute('fill','none');
+    if(f.kind==='repl')p.setAttribute('stroke-dasharray','4 4');flowSvg.insertBefore(p,flowSvg.firstChild)}}
+
+// ---------------------------------------------------------------- tiles, failure table, events, details
+const HIST=[];                       // (time, trader errors, orders received) for "last 10 s" rates
+function tiles(){const A=S.audit||{}, T=S.traders||{}, st=S.status, now=Date.now()/1000;
+  const apis=Object.entries(st.services||{}).filter(([k])=>k.startsWith('api-')).map(([,v])=>v&&v.ticks).filter(Boolean);
+  const gap=apis.length?Math.max(...apis.map(t=>t.max_gap_60s||0)):null;
+  const errs=(T.retries||0)+(T.gave_up||0)+(T.login_failed||0)+(T.quote_failed||0);
+  HIST.push([now,errs,T.received||0]);while(HIST.length&&now-HIST[0][0]>10.5)HIST.shift();
+  const errs10=errs-HIST[0][1], got10=(T.received||0)-HIST[0][2];
+  const lead=Object.entries(st.roles||{}).find(([n,v])=>n.startsWith('pg-')&&v==='LEADER');
+  const auditAge=A.t?now-A.t:null, paused=A.ok===false||(auditAge!=null&&auditAge>10);
+  const accepting=!!lead&&(got10>0||!T.n);
+  const P=v=>paused?{v,stale:true}:v;          // audit numbers frozen while the audit can't reach the database
+  const B=v=>(paused||A.books_error)?{v,stale:true}:v;
+  const tl=[['Accepting orders',lead?(accepting?'YES':'…'):'NO',lead?(accepting?'g':'n'):'b'],
+   ['Orders “Received”',P(A.received),'n'],['Lost',P(A.lost),'z'],['Sent twice',P(A.sent_twice),'z'],['Fills missing',P(A.fills_missing),'z'],
+   ['Books wrong',B(A.books_wrong),'z'],['Notifications missing',P(A.notify_missing),'z'],['Tick gap (max 60 s)',gap!=null?gap.toFixed(1)+' s':'-',gap!=null&&gap<3?'g':'b'],
+   ['Outbox backlog',P(A.outbox_backlog),'n'],['Trader errors (last 10 s)',errs10,errs10>0?'b':'g'],['Gave up (never Received)',T.gave_up||0,'n']];
+  $('tiles').innerHTML=tl.map(([l,x,k])=>{const stale=x&&x.stale, v=stale?x.v:x;
+    const cls=stale?'stale':k==='z'?(v>0?'bad':v===0?'good':''):k==='g'?'good':k==='b'?'bad':'';
+    return `<div class="tile ${cls}"><span title="${l}">${l}${stale?' · paused':''}</span><b>${v??'-'}</b></div>`}).join('');
+  const al=$('alert');let msg='';
+  const gapNow=Math.max(0,...Object.entries(st.services||{}).filter(([k])=>k.startsWith('api-')).map(([,v])=>(v&&v.ticks&&v.ticks.gap_now)||0));
+  if(gapNow>3)msg+=`<b>PRICES STALE: no new tick for ${gapNow.toFixed(0)} s.</b> New orders are refused until prices flow again. `;
+  if(document.activeElement!==$('autoheal'))$('autoheal').checked=!!S.autoheal;
+  if(!lead)msg+=`<b>DATABASE DOWN: no PostgreSQL leader.</b> ${['pg-1','pg-2','pg-3'].filter(up).length} of 3 database nodes running. New orders get “try again” and are NOT accepted, so nothing is lost; traders keep retrying with the same order id (errors in the last 10 s: ${errs10}). Prices still flow from Kafka. Start a pg node (or Restore everything) to recover.`;
+  if(paused)msg+=`${msg?' ':''}<b>Audit ${A.ok===false?'paused':'delayed'}</b>: the audit tiles show the last completed result from ${auditAge!=null?Math.round(auditAge)+' s':'—'} ago. Retrying automatically.`;
+  al.hidden=!msg;al.innerHTML=msg}
+const TECH={spare:['#2563eb','Spare copies'],vote:['#0d9488','Majority vote + promote'],sync:['#0f766e','Copy before "OK"'],
+  retry:['#7c3aed','Safe retry (same id)'],outbox:['#ea580c','Outbox / ack after confirm'],fence:['#dc2626','Fencing'],dedupe:['#475569','Deduplicate']};
+const tq=k=>`<span class="tq" style="--tc:${TECH[k][0]}">${TECH[k][1]}</span>`;
+const up=n=>((S.status.containers||{})[n]||{}).state==='running';
+const holder=(p,r)=>Object.entries(S.status.roles||{}).find(([n,v])=>n.startsWith(p)&&v.startsWith(r));
+const FAILS=[
+ ['api','An API server','Nothing. A request caught inside it is resent by the app.',['spare','retry'],'HAProxy checks each API every second and skips a dead one (2 misses). Orders carry a client_ref, so a resend is never a second order.',()=>{const n=['api-1','api-2','api-3','api-4'].filter(up).length;return [n===4?'ok':'warn',`${n}/4 up`]}],
+ ['haproxy','A load balancer','A short pause; the app uses the other address.',['spare','retry'],'Two HAProxies in two zones. The traders know both addresses and switch on connection failure.',()=>{const n=['haproxy-1','haproxy-2'].filter(up).length;return [n===2?'ok':'warn',`${n}/2 up`]}],
+ ['redis','The Redis master','Nothing: logins are signed tokens checked by each API server.',['vote','spare'],'Redis only holds extras (login registry, rate limits) and is used “fail open” with a circuit breaker. 3 Sentinels: 2 of 3 agree the master is gone and promote the replica with the most recent data (a long-disconnected replica is too stale to promote). A restarted node asks the Sentinels who the master is and rejoins as its replica.',()=>{const m=(S.status.redis||{}).master;return [m?'ok':'bad',m?`master ${m}`:'no master']}],
+ ['pgbouncer','A PgBouncer','Nothing; apps use the other one.',['spare'],'Two poolers; every app lists both (libpq multi-host). Each one has its own HAProxy that follows the Patroni leader.',()=>{const n=['pgbouncer-1','pgbouncer-2'].filter(up).length;return [n===2?'ok':'warn',`${n}/2 up`]}],
+ ['postgres','The PostgreSQL leader','~20 s of “try again”. No order lost.',['sync','vote','retry'],'Quorum commit: “Received” only once ANY 1 of the 2 standbys has the order. The leader’s key in etcd expires (20 s, Patroni’s minimum: it must be sure the leader is really gone); Patroni promotes the standby the quorum proves is complete; the PgBouncers follow it; traders resend with the same client_ref. The old leader rejoins with pg_rewind; WAL it missed comes from the backup archive.',()=>{const l=holder('pg-','LEADER'),s=holder('pg-','SYNC')||holder('pg-','QUORUM');return [l&&s?'ok':l?'warn':'bad',l?`${l[0]} leads${s?' · sync '+s[0]:' · no sync!'}`:'electing…']}],
+ ['etcd','The etcd leader','Nothing.',['vote'],'etcd is Raft: the 2 survivors elect a new leader in ~1 s and keep the quorum Patroni needs.',()=>{const n=['etcd-1','etcd-2','etcd-3'].filter(up).length;return [n===3?'ok':n===2?'warn':'bad',`${n}/3 · leader ${holder('etcd-','LEADER')?.[0]||'-'}`]}],
+ ['kafka','A Kafka broker (the busiest)','Nothing. Ticks keep flowing.',['spare','vote','retry'],'Every partition has 3 replicas, writes need 2 in sync (acks=all). The KRaft majority moves leadership in ~2.5 s; idempotent producers resend without duplicates.',()=>{const k=S.status.kafka;if(!k)return ['bad','no answer'];let u=0;for(const ps of Object.values(k.topics))for(const p of ps)if(p.isr.length<p.replicas.length)u++;return [u?'warn':'ok',`${k.brokers.length}/3 brokers · ${u} under-replicated`]}],
+ ['rabbitmq','The RabbitMQ queue leader','Notifications a few seconds late.',['vote','outbox','dedupe'],'The quorum queue (Raft, 3 replicas) elects a new leader. The bridge only commits Kafka after RabbitMQ confirms; workers ack after saving; repeats are dropped by message_id.',()=>{const q=((S.status.rabbit||{}).queue)||{};return [q.leader?(q.online.length===3?'ok':'warn'):'bad',q.leader?`leader ${q.leader} · ${q.online.length}/3 online`:'no leader']}],
+ ['router','The active order router','Orders wait ~3 s. None sent twice.',['fence','retry'],'A lease in PostgreSQL with an epoch. The standby takes it when it expires (3 s), asks the exchange about every unconfirmed order by client_ref, expires old market orders, then continues from the saved Kafka positions.',()=>{const a=holder('router-','ACTIVE');return [a?'ok':'bad',a?`${a[0]} active · epoch ${(S.status.lease||{}).epoch}`:'taking over…']}],
+ ['relay','An outbox relay','Nothing.',['spare','outbox'],'Both relays are active (FOR UPDATE SKIP LOCKED). Rows are marked published only after Kafka confirms; a crash leaves them to be sent again.',()=>{const n=['relay-1','relay-2'].filter(up).length;return [n===2?'ok':'warn',`${n}/2 · backlog ${(S.audit||{}).outbox_backlog??'-'}`]}],
+ ['feed','A market data feed','Nothing: ticks keep flowing.',['spare','dedupe'],'Two feed handlers publish the same ticks all the time; every API keeps the highest sequence per symbol.',()=>{const n=['feed-1','feed-2'].filter(up).length;return [n?'ok':'bad',`${n}/2 feeding`]}],
+ ['bridge','A Kafka → RabbitMQ bridge','Nothing.',['spare','outbox'],'Kafka consumer group: the survivor takes all 6 partitions after a rebalance and continues from the committed offsets.',()=>{const n=['bridge-1','bridge-2'].filter(up).length;return [n===2?'ok':'warn',`${n}/2 up`]}],
+ ['worker','A notification worker','Nothing.',['spare','dedupe'],'Competing consumers on the quorum queue: unacked messages go to the other worker.',()=>{const n=['worker-1','worker-2'].filter(up).length;return [n===2?'ok':'warn',`${n}/2 up`]}],
+ ['zone','A whole zone (Azure Zone 1)','A few seconds of retries.',['spare','vote','sync'],'Every stateful system has one node per zone: etcd, PostgreSQL, Kafka, RabbitMQ and Redis/Sentinel each keep a 2-of-3 majority in the other two zones and promote there.',()=>{const all=Object.values(S.status.containers||{}).filter(c=>c.site==='azure-z1');const u=all.filter(c=>c.state==='running').length;return [u===all.length?'ok':'bad',`${u}/${all.length} running`]}],
+ ['partition','A network cut around the DB leader','~20 s of retries.',['fence','vote'],'The cut-off leader can’t renew its key in etcd, so it demotes itself; HAProxy stops sending to it; a standby is promoted. Never two primaries.',()=>{const c=Object.values(S.status.containers||{}).filter(c=>c.state==='cut').map(c=>c.service);return [c.length?'warn':'ok',c.length?`cut: ${c.join(', ')}`:'all connected']}]];
+function buildFails(){$('fails').innerHTML=FAILS.map(([k,what,see,tech,how],i)=>`<tr><td><b>${what}</b></td><td>${see}</td><td>${tech.map(tq).join('')}<div class="how">${how}</div></td><td id="fn${i}"></td><td><button data-try="${k}">Try it</button></td></tr>`).join('');
+  $('fails').querySelectorAll('[data-try]').forEach(b=>b.onclick=()=>api('/api/try',{scenario:b.dataset.try}).then(r=>{if(r.error)alert(r.error)}))}
+function renderFails(){FAILS.forEach((f,i)=>{let r;try{r=f[5]()}catch(e){r=['warn','-']}$('fn'+i).innerHTML=`<span class="badge ${r[0]}">${esc(r[1])}</span>`});
+  document.querySelectorAll('[data-try]').forEach(b=>b.disabled=!!S.try)}
+function renderEvents(){$('evSub').textContent=S.try?`drill running: ${S.try}`:'';
+  $('events').innerHTML=(S.events||[]).map(e=>`<li class="${e.cls}"><span class="t">${fmtT(e.t)}</span>${esc(e.text)}</li>`).join('')}
+function details(){const st=S.status;
+  const P=st.patroni||{};const bounce=st.bouncers||{};
+  $('dPg').innerHTML=`<table><thead><tr><th>node</th><th>role</th><th>state</th><th>timeline</th><th>lag</th></tr></thead><tbody>${(P.members||[]).map(m=>`<tr><td class="m">${m.name}</td><td><span class="badge ${m.role==='leader'?'info':(m.role==='sync_standby'||m.role==='quorum_standby')?'ok':'warn'}">${m.role}</span></td><td>${m.state}</td><td class="m">${m.timeline??'-'}</td><td class="m">${m.lag??'-'}</td></tr>`).join('')||'<tr><td colspan=5>Patroni not answering</td></tr>'}</tbody></table>
+   <table style="margin-top:8px"><thead><tr><th>PgBouncer</th><th>clients active</th><th>waiting</th><th>server conns</th></tr></thead><tbody>${Object.entries(bounce).map(([n,b])=>`<tr><td class="m">${n}</td>${b&&b.up?`<td>${b.cl_active}</td><td>${b.cl_waiting}</td><td>${b.sv_active} active · ${b.sv_idle} idle</td>`:'<td colspan=3><span class="badge bad">down</span></td>'}</tr>`).join('')}</tbody></table>
+   <p class="note">Quorum commit: a commit waits until <b>any 1 of the 2 standbys</b> has it. PgBouncer → its own HAProxy → whichever node answers 200 on Patroni's /primary.</p>`;
+  const B=S.backups||{}, AR=B.archive||{}, fmtB=b=>b==null?'-':(b/1048576).toFixed(1)+' MB';
+  $('dBackup').innerHTML=`<div>repository: <b>${esc(B.stanza||'not set up yet')}</b>${B.running?` · <span class="badge info">${B.running} backup running…</span>`:''}${B.last_error?` · <span class="badge bad">${esc(B.last_error)}</span>`:''}</div>
+   <table style="margin-top:6px"><thead><tr><th>backup</th><th>type</th><th>finished</th><th>database size</th><th>stored</th></tr></thead><tbody>${(B.backups||[]).slice().reverse().map(b=>`<tr><td class="m">${esc(b.label)}</td><td>${b.type}</td><td class="m">${fmtT(b.stop)}</td><td>${fmtB(b.size)}</td><td>${fmtB(b.repo_size)}</td></tr>`).join('')||'<tr><td colspan=5>no backup yet (the first runs within a minute)</td></tr>'}</tbody></table>
+   <div class="m" style="margin-top:6px">WAL archived: ${AR.archived??'-'} files · last ${esc(AR.last_wal||'-')} (${AR.age??'-'} s ago) · failures ${AR.failed??'-'}</div>
+   <p class="note">Every change (WAL) is archived continuously, plus an incremental backup every 30 min and a full one daily, into a repository that stands for object storage in another region. Together they allow <b>point-in-time recovery</b>: restore a backup and replay WAL up to any second, e.g. just before a bad deploy. Replication copies mistakes; backups undo them.</p>`;
+  const K=st.kafka;
+  $('dKafka').innerHTML=K?Object.entries(K.topics).map(([t,ps])=>`<div style="margin-bottom:6px"><b class="m">${t}</b><div class="parts">${ps.map(p=>`<span class="${p.isr.length<p.replicas.length?'under':''}" title="replicas ${p.replicas.join(',')}">p${p.p}: L${p.leader} · isr ${p.isr.join('')}</span>`).join('')}</div></div>`).join('')+
+    `<p class="note">Brokers up: ${K.brokers.join(', ')}. L = leader broker. Orange = fewer in-sync replicas than the partition has (the price lines have 1 copy by design). orders.* need 2 in sync to accept a write; ticks need 1 (prices keep flowing).</p>`:'<p class="note">Kafka not answering</p>';
+  const apis=Object.entries(st.services||{}).filter(([k])=>k.startsWith('api-')), feeds=Object.entries(st.services||{}).filter(([k])=>k.startsWith('feed-'));
+  $('dTicks').innerHTML=`<table><thead><tr><th>reader</th><th>ticks</th><th>dups dropped</th><th>gap now</th><th>max gap 60 s</th></tr></thead><tbody>${apis.map(([n,v])=>{const t=(v||{}).ticks||{};return `<tr><td class="m">${n}</td><td>${t.ticks??'-'}</td><td>${t.dups??'-'}</td><td class="m">${t.gap_now??'-'} s</td><td><span class="badge ${t.max_gap_60s<3?'ok':'bad'}">${t.max_gap_60s??'-'} s</span></td></tr>`}).join('')}</tbody></table>
+   <table style="margin-top:6px"><thead><tr><th>feed</th><th>published</th><th>last tick</th><th>exchange</th></tr></thead><tbody>${feeds.map(([n,v])=>`<tr><td class="m">${n}</td><td>${((v||{}).counters||{}).published??'-'}</td><td class="m">${(v||{}).tick_age??'-'} s ago</td><td>${(v||{}).exchange_ok?'<span class="badge ok">ok</span>':'<span class="badge bad">no</span>'}</td></tr>`).join('')}</tbody></table>
+   <p class="note">Both feeds publish every tick; each API keeps the highest sequence per symbol (the duplicates are the proof that both are working). Orders are refused only if a price is older than 3 s.</p>`;
+  const L=st.lease||{}, routers=Object.entries(st.services||{}).filter(([k])=>k.startsWith('router-'));
+  const act=routers.find(([,v])=>v&&v.role==='active');
+  $('dRouter').innerHTML=`<div class="m">lease: ${esc(L.holder||'-')} · epoch ${L.epoch??'-'} · expires in ${L.expires_in??'-'} s</div>
+   <table style="margin-top:6px"><thead><tr><th>router</th><th>role</th><th>sent</th><th>fills</th><th>reconciled</th><th>expired</th></tr></thead><tbody>${routers.map(([n,v])=>{const c=(v||{}).counters||{};return `<tr><td class="m">${n}</td><td><span class="badge ${v&&v.role==='active'?'info':'warn'}">${v?v.role:'down'}</span></td><td>${c.sent||0}</td><td>${c.fills||0}</td><td>${(c.reconciled_found||0)+(c.reconciled_resent||0)}</td><td>${(c.expired||0)+(c.reconciled_expired||0)}</td></tr>`}).join('')}</tbody></table>
+   <ul class="evs" style="max-height:150px;margin-top:6px">${((act&&act[1].log)||(routers[0]&&routers[0][1]&&routers[0][1].log)||[]).map(l=>`<li><span class="t">${fmtT(l.t)}</span>${esc(l.text)}</li>`).join('')}</ul>`;
+  const Q=(st.rabbit||{}).queue||{}, RN=(st.rabbit||{}).nodes||{}, RD=st.redis||{};
+  $('dMisc').innerHTML=`<div><b>RabbitMQ</b> nodes: ${Object.entries(RN).map(([n,u])=>`<span class="badge ${u?'ok':'bad'}">${n}</span>`).join(' ')}<br>queue <b>notifications</b> (quorum): leader <b>${esc(Q.leader||'-')}</b> · online ${(Q.online||[]).join(', ')} · ready ${Q.ready??'-'} · unacked ${Q.unacked??'-'} · consumers ${Q.consumers??'-'}</div>
+   <div style="margin-top:8px"><b>Redis</b> master (Sentinel): <b>${esc(RD.master||'-')}</b> · ${Object.entries(RD.nodes||{}).map(([n,v])=>`<span class="badge ${v.up?(v.role==='master'?'info':'ok'):'bad'}">${n} ${v.up?v.role:'down'}</span>`).join(' ')} · sentinels ${Object.values(RD.sentinels||{}).filter(Boolean).length}/3</div>
+   <div style="margin-top:8px"><b>HAProxy</b> ${Object.entries(st.lbs||{}).map(([lb,b])=>`<div class="m">${lb}: ${b?Object.entries(b).map(([a,s])=>`<span class="badge ${s.status==='UP'?'ok':'bad'}">${a} ${s.status}</span>`).join(' '):'<span class="badge bad">down</span>'}</div>`).join('')}</div>`;
+  const A=S.audit||{}, T=S.traders||{};
+  $('dAudit').innerHTML=`<div>${Object.entries(A.by_status||{}).map(([k,v])=>`<span class="badge info" style="margin:1px">${k} ${v}</span>`).join('')}</div>
+   <table style="margin-top:6px"><tbody>
+   <tr><td>Orders “Received” by traders</td><td class="m">${A.received??'-'}</td></tr><tr><td>…found in the database</td><td class="m">${A.confirmed??'-'}</td></tr>
+   <tr><td>Exchange orders · duplicates by client_ref</td><td class="m">${A.exchange_orders??'-'} · ${A.sent_twice??'-'}</td></tr>
+   <tr><td>Fills at the exchange (older than 5 s) · missing in DB</td><td class="m">${A.fills_exchange??'-'} · ${A.fills_missing??'-'}</td></tr>
+   <tr><td>Cash · positions · reservations wrong</td><td class="m">${A.cash_wrong??'-'} · ${A.positions_wrong??'-'} · ${A.reserve_wrong??'-'}</td></tr>
+   <tr><td>Events · notifications delivered · missing (last 15 min)</td><td class="m">${A.events??'-'} · ${A.notified??'-'} · ${A.notify_missing??'-'}</td></tr>
+   <tr><td>Trader requests retried · refused (stale/risk) · gave up</td><td class="m">${T.retries||0} · ${(T.refused_stale||0)+(T.refused_risk||0)} · ${T.gave_up||0}</td></tr>
+   </tbody></table><p class="note">${A.ok===false?'<b>Audit paused</b>: '+esc(A.error||'')+' (normal during a database failover)':'Live audit every 3 s.'}
+   Full accounting: ${A.books_running?'checking in background':A.books_checked_at?'last completed '+Math.max(0,Math.round(Date.now()/1000-A.books_checked_at))+' s ago':'first check pending'}.
+   ${A.books_error?'Last accounting check deferred: '+esc(A.books_error):''}</p>`}
+
+// ---------------------------------------------------------------- polling
+let built=false, linkT=0;
+async function poll(){
+  try{S=await api('/api/state');
+    $('upDot').className='dot '+(S.ready?'ok':'warn');$('upTxt').textContent=S.ready?'running':'starting';
+    $('boot').hidden=S.ready;$('boot').textContent='Starting up: '+S.boot;
+    if(!built&&S.sites){sites=S.sites;buildBoard();buildFails();built=true}
+    if(document.activeElement!==$('trR')){$('trR').value=S.traders.n;$('trN').textContent=S.traders.n}
+    if(S.status&&S.status.containers){renderBoard();tiles();renderFails();details();if(performance.now()-linkT>900){drawLinks();linkT=performance.now()}}
+    renderEvents()}catch(e){$('upDot').className='dot bad';$('upTxt').textContent='control not answering'}
+  setTimeout(poll,1000)}
+$('trR').oninput=()=>$('trN').textContent=$('trR').value;
+$('trR').onchange=()=>api('/api/traders',{n:+$('trR').value});
+$('restore').onclick=()=>api('/api/restore',{});
+$('autoheal').onchange=()=>api('/api/autoheal',{on:$('autoheal').checked});
+$('backupNow').onclick=()=>api('/api/backup',{});
+window.addEventListener('resize',()=>{if(S)drawLinks()});
+poll();
+</script>
+</body>
+</html>

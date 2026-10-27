@@ -1,0 +1,38 @@
+[
+  {
+    "name": "1worker-500users",
+    "accepted_unique": 5184,
+    "market_orders": 3137,
+    "market_expired": 2475,
+    "filled": 1970,
+    "waiting_to_submit": 0,
+    "at_exchange": 140
+  },
+  {
+    "name": "2worker-100users",
+    "accepted_unique": 1474,
+    "market_orders": 853,
+    "market_expired": 0,
+    "filled": 1245,
+    "waiting_to_submit": 0,
+    "at_exchange": 22
+  },
+  {
+    "name": "2worker-250users",
+    "accepted_unique": 3946,
+    "market_orders": 2348,
+    "market_expired": 1931,
+    "filled": 1237,
+    "waiting_to_submit": 0,
+    "at_exchange": 49
+  },
+  {
+    "name": "2worker-500users",
+    "accepted_unique": 6346,
+    "market_orders": 3783,
+    "market_expired": 3513,
+    "filled": 1420,
+    "waiting_to_submit": 0,
+    "at_exchange": 260
+  }
+]

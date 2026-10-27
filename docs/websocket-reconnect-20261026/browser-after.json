@@ -1,0 +1,102 @@
+[
+  {
+    "label": "after",
+    "mode": "kill",
+    "port": 8443,
+    "target_api": "api-4",
+    "kill_at_ms": 126.30000000447035,
+    "recovery_ms": 769.2,
+    "new_api": "api-1",
+    "events": [
+      {
+        "type": "connect",
+        "id": 0,
+        "t": 20.30000000447035
+      },
+      {
+        "type": "open",
+        "id": 0,
+        "t": 27.600000001490116
+      },
+      {
+        "type": "first-tick",
+        "id": 0,
+        "t": 28,
+        "server": "api-4"
+      },
+      {
+        "type": "close",
+        "id": 0,
+        "t": 158.60000000149012,
+        "code": 1006
+      },
+      {
+        "type": "connect",
+        "id": 1,
+        "t": 389.90000000596046
+      },
+      {
+        "type": "open",
+        "id": 1,
+        "t": 895.2000000029802
+      },
+      {
+        "type": "first-tick",
+        "id": 1,
+        "t": 895.5,
+        "server": "api-1"
+      }
+    ],
+    "status": "via api-1"
+  },
+  {
+    "label": "after",
+    "mode": "kill",
+    "port": 8444,
+    "target_api": "api-4",
+    "kill_at_ms": 121.10000000149012,
+    "recovery_ms": 909.7,
+    "new_api": "api-3",
+    "events": [
+      {
+        "type": "connect",
+        "id": 0,
+        "t": 12.700000002980232
+      },
+      {
+        "type": "open",
+        "id": 0,
+        "t": 45.900000005960464
+      },
+      {
+        "type": "first-tick",
+        "id": 0,
+        "t": 46.5,
+        "server": "api-4"
+      },
+      {
+        "type": "close",
+        "id": 0,
+        "t": 328.5,
+        "code": 1006
+      },
+      {
+        "type": "connect",
+        "id": 1,
+        "t": 524.6000000014901
+      },
+      {
+        "type": "open",
+        "id": 1,
+        "t": 1030.6000000014901
+      },
+      {
+        "type": "first-tick",
+        "id": 1,
+        "t": 1030.8000000044703,
+        "server": "api-3"
+      }
+    ],
+    "status": "via api-3"
+  }
+]

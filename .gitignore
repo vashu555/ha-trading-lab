@@ -1,0 +1,15 @@
+# Generated lab TLS keys/certificates; create locally with the setup script.
+config/certs/*.pem
+config/certs/*.key
+config/certs/*.crt
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+tmp/
+docs/loadtest/ui/
+docs/testing/*Z-account-check/

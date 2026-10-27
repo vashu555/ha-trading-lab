@@ -1,0 +1,68 @@
+[
+  {
+    "label": "stalled-after",
+    "mode": "stall",
+    "port": 8443,
+    "target_api": "api-4",
+    "kill_at_ms": 118.80000000447035,
+    "recovery_ms": 2623.5,
+    "new_api": "api-4",
+    "events": [
+      {
+        "type": "connect",
+        "id": 0,
+        "t": 10.700000002980232
+      },
+      {
+        "type": "open",
+        "id": 0,
+        "t": 50.100000001490116
+      },
+      {
+        "type": "first-tick",
+        "id": 0,
+        "t": 50.5,
+        "server": "api-4"
+      },
+      {
+        "type": "close",
+        "id": 0,
+        "t": 190.20000000298023,
+        "code": 1005
+      },
+      {
+        "type": "connect",
+        "id": 1,
+        "t": 393.6000000014901
+      },
+      {
+        "type": "error",
+        "id": 1,
+        "t": 2409.7000000029802
+      },
+      {
+        "type": "close",
+        "id": 1,
+        "t": 2409.89999999851,
+        "code": 1006
+      },
+      {
+        "type": "connect",
+        "id": 2,
+        "t": 2738.60000000149
+      },
+      {
+        "type": "open",
+        "id": 2,
+        "t": 2742
+      },
+      {
+        "type": "first-tick",
+        "id": 2,
+        "t": 2742.3000000044703,
+        "server": "api-4"
+      }
+    ],
+    "status": "via api-4"
+  }
+]

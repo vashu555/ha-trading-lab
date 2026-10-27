@@ -1,0 +1,7 @@
+{"topic": "marketdata.ticks.lineA", "partition": 0, "new_low_watermark": 2864053}
+{"topic": "marketdata.ticks.lineA", "partition": 1, "new_low_watermark": 572565}
+{"topic": "marketdata.ticks.lineA", "partition": 2, "new_low_watermark": 1145900}
+{"topic": "marketdata.ticks.lineB", "partition": 0, "new_low_watermark": 2863347}
+{"topic": "marketdata.ticks.lineB", "partition": 1, "new_low_watermark": 572422}
+{"topic": "marketdata.ticks.lineB", "partition": 2, "new_low_watermark": 1145592}
+{"records_removed": 151617, "partitions": [{"topic": "marketdata.ticks.lineA", "partition": 0, "low": 2816607, "delete_before": 2864053, "records": 47446}, {"topic": "marketdata.ticks.lineA", "partition": 1, "low": 562987, "delete_before": 572565, "records": 9578}, {"topic": "marketdata.ticks.lineA", "partition": 2, "low": 1126923, "delete_before": 1145900, "records": 18977}, {"topic": "marketdata.ticks.lineB", "partition": 0, "low": 2816128, "delete_before": 2863347, "records": 47219}, {"topic": "marketdata.ticks.lineB", "partition": 1, "low": 562897, "delete_before": 572422, "records": 9525}, {"topic": "marketdata.ticks.lineB", "partition": 2, "low": 1126720, "delete_before": 1145592, "records": 18872}]}

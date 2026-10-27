@@ -1,0 +1,18 @@
+{
+  "kept_full": "20261026-041520F",
+  "remaining": {
+    "full": 1,
+    "incr": 12
+  },
+  "expired_count": 43,
+  "bytes_before_approx": 22380912640,
+  "bytes_after": 2104815616,
+  "bytes_reclaimed_in_wsl_approx": 20276097024,
+  "retention_by_node": {
+    "pg-1": 1,
+    "pg-2": 1,
+    "pg-3": 1
+  },
+  "archive_check_passed": true,
+  "remaining_repository_verify_passed": true
+}

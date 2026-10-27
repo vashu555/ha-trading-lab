@@ -1,0 +1,438 @@
+# HA Trading Lab: a working, failure-tolerant trading back end built from real software, on one PC.
+#
+#   docker compose up -d --build          (Ubuntu / WSL, in /mnt/d/HA_Trading_Lab)   → dashboard http://127.0.0.1:9700
+#   docker compose down                   stop (data kept)        ·   docker compose down -v   stop and wipe all data
+#
+# Three pretend clouds ("sites"), so every stateful system keeps a majority when one site is lost:
+#   azure-z1  Azure · Central India · Zone 1        azure-z2  Azure · Central India · Zone 2
+#   oracle    Oracle Cloud · Mumbai (ap-mumbai-1)   (all names are made up: everything runs on this PC)
+# The exchange is SIMULATED and exists only inside this lab. Nothing here connects to IBKR or any real market.
+# Only the dashboard is published (127.0.0.1:9700). Nothing clashes with the Finflock stack's ports.
+name: ha-lab
+
+x-app: &app
+  image: ha-lab-app:local
+  restart: unless-stopped
+  dns_search: [.]
+  dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+  mem_limit: 160m
+  networks: [backbone]
+  depends_on: {control: {condition: service_started}}
+
+x-kafka-env: &kafka-env
+  CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+  KAFKA_PROCESS_ROLES: broker,controller
+  KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+  KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+  KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+  KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1:9093,2@kafka-2:9093,3@kafka-3:9093
+  KAFKA_LOG_DIRS: /var/lib/kafka/data
+  KAFKA_NUM_PARTITIONS: 6
+  KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+  KAFKA_MIN_INSYNC_REPLICAS: 2
+  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+  KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+  KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+  KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+  KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: "false"
+  KAFKA_BROKER_HEARTBEAT_INTERVAL_MS: 400        # a dead broker is noticed fast …
+  KAFKA_BROKER_SESSION_TIMEOUT_MS: 2000          # … and its partitions get new leaders within ~2 s
+  KAFKA_CONTROLLER_QUORUM_FETCH_TIMEOUT_MS: 1200 # a dead KRaft controller is replaced within ~2 s
+  KAFKA_CONTROLLER_QUORUM_ELECTION_TIMEOUT_MS: 600
+  KAFKA_LEADER_IMBALANCE_CHECK_INTERVAL_SECONDS: 15   # after a broker comes back, give it its partitions back
+  KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 2000
+  KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+  KAFKA_LOG_CLEANER_DEDUPE_BUFFER_SIZE: 8388608  # 8 MB (default 128 MB doesn't fit this small heap)
+  KAFKA_HEAP_OPTS: "-Xmx200m -Xms96m"
+  KAFKA_JVM_PERFORMANCE_OPTS: "-XX:+UseSerialGC -XX:MaxMetaspaceSize=96m -XX:MaxDirectMemorySize=64m -Djava.awt.headless=true"
+
+x-pg: &pg
+  build: ./images/postgres
+  image: ha-lab-postgres:local
+  restart: unless-stopped
+  dns_search: [.]
+  dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+  mem_limit: 512m                  # 300m was too small once the tables passed ~1 GB: constant disk reads, stalled commits
+  shm_size: 256m                   # parallel query and VACUUM use /dev/shm (64m failed a parallel VACUUM)
+  networks: [backbone]
+  depends_on: [etcd-1, etcd-2, etcd-3]
+
+x-etcd: &etcd
+  image: quay.io/coreos/etcd:v3.5.15
+  restart: unless-stopped
+  dns_search: [.]
+  dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+  mem_limit: 128m
+  networks: [backbone]
+
+x-redis: &redis
+  image: redis:7.4-alpine
+  restart: unless-stopped
+  dns_search: [.]
+  dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+  mem_limit: 64m
+  networks: [backbone]
+
+x-sentinel: &sentinel
+  image: redis:7.4-alpine
+  restart: unless-stopped
+  dns_search: [.]
+  dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+  mem_limit: 32m
+  networks: [backbone]
+  entrypoint: ["sh", "/lab/sentinel-entry.sh"]
+
+x-rabbit: &rabbit
+  image: rabbitmq:3.13-management
+  restart: unless-stopped
+  dns_search: [.]
+  dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+  mem_limit: 330m
+  networks: [backbone]
+  entrypoint: ["sh", "/lab/rabbit-entry.sh"]
+  environment:
+    LAB_ERLANG_COOKIE: haLabSharedErlangCookie2026
+
+x-haproxy: &haproxy
+  image: haproxy:2.9-alpine
+  restart: unless-stopped
+  dns_search: [.]
+  dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+  mem_limit: 64m
+  networks: [backbone]
+  volumes: ["./config/haproxy-edge.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro",
+            "./config/certs:/usr/local/etc/haproxy/certs:ro"]
+
+x-bouncer: &bouncer
+  build: ./images/pgbouncer
+  image: ha-lab-pgbouncer:local
+  restart: unless-stopped
+  dns_search: [.]
+  dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+  mem_limit: 64m
+  networks: [backbone]
+
+services:
+  # ------------------------------------------------------------------ etcd: the vote that decides who leads PostgreSQL
+  etcd-1:
+    <<: *etcd
+    container_name: hal-etcd-1
+    labels: {lab.site: azure-z1, lab.kind: etcd}
+    volumes: [etcd-1:/etcd-data]
+    command: [etcd, --name, etcd-1, --data-dir, /etcd-data, --heartbeat-interval, "250", --election-timeout, "1250",
+              --listen-peer-urls, "http://0.0.0.0:2380", --initial-advertise-peer-urls, "http://etcd-1:2380",
+              --listen-client-urls, "http://0.0.0.0:2379", --advertise-client-urls, "http://etcd-1:2379",
+              --initial-cluster, "etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380,etcd-3=http://etcd-3:2380",
+              --initial-cluster-state, new, --initial-cluster-token, ha-lab]
+  etcd-2:
+    <<: *etcd
+    container_name: hal-etcd-2
+    labels: {lab.site: azure-z2, lab.kind: etcd}
+    volumes: [etcd-2:/etcd-data]
+    command: [etcd, --name, etcd-2, --data-dir, /etcd-data, --heartbeat-interval, "250", --election-timeout, "1250",
+              --listen-peer-urls, "http://0.0.0.0:2380", --initial-advertise-peer-urls, "http://etcd-2:2380",
+              --listen-client-urls, "http://0.0.0.0:2379", --advertise-client-urls, "http://etcd-2:2379",
+              --initial-cluster, "etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380,etcd-3=http://etcd-3:2380",
+              --initial-cluster-state, new, --initial-cluster-token, ha-lab]
+  etcd-3:
+    <<: *etcd
+    container_name: hal-etcd-3
+    labels: {lab.site: oracle, lab.kind: etcd}
+    volumes: [etcd-3:/etcd-data]
+    command: [etcd, --name, etcd-3, --data-dir, /etcd-data, --heartbeat-interval, "250", --election-timeout, "1250",
+              --listen-peer-urls, "http://0.0.0.0:2380", --initial-advertise-peer-urls, "http://etcd-3:2380",
+              --listen-client-urls, "http://0.0.0.0:2379", --advertise-client-urls, "http://etcd-3:2379",
+              --initial-cluster, "etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380,etcd-3=http://etcd-3:2380",
+              --initial-cluster-state, new, --initial-cluster-token, ha-lab]
+
+  # ------------------------------------------------------------------ PostgreSQL ×3 with Patroni
+  pg-1:
+    <<: *pg
+    container_name: hal-pg-1
+    hostname: pg-1
+    labels: {lab.site: azure-z1, lab.kind: postgres}
+    volumes: [pg-1:/var/lib/postgresql/data, backup-repo:/backup]
+    environment: {PATRONI_NAME: pg-1, PATRONI_RESTAPI_CONNECT_ADDRESS: "pg-1:8008", PATRONI_POSTGRESQL_CONNECT_ADDRESS: "pg-1:5432",
+                  PATRONI_ETCD3_HOSTS: "etcd-1:2379,etcd-2:2379,etcd-3:2379"}
+  pg-2:
+    <<: *pg
+    container_name: hal-pg-2
+    hostname: pg-2
+    labels: {lab.site: azure-z2, lab.kind: postgres}
+    volumes: [pg-2:/var/lib/postgresql/data, backup-repo:/backup]
+    environment: {PATRONI_NAME: pg-2, PATRONI_RESTAPI_CONNECT_ADDRESS: "pg-2:8008", PATRONI_POSTGRESQL_CONNECT_ADDRESS: "pg-2:5432",
+                  PATRONI_ETCD3_HOSTS: "etcd-1:2379,etcd-2:2379,etcd-3:2379"}
+  pg-3:
+    <<: *pg
+    container_name: hal-pg-3
+    hostname: pg-3
+    labels: {lab.site: oracle, lab.kind: postgres}
+    volumes: [pg-3:/var/lib/postgresql/data, backup-repo:/backup]
+    environment: {PATRONI_NAME: pg-3, PATRONI_RESTAPI_CONNECT_ADDRESS: "pg-3:8008", PATRONI_POSTGRESQL_CONNECT_ADDRESS: "pg-3:5432",
+                  PATRONI_ETCD3_HOSTS: "etcd-1:2379,etcd-2:2379,etcd-3:2379"}
+
+  # ------------------------------------------------------------------ PgBouncer ×2 (each follows the Patroni leader)
+  pgbouncer-1:
+    <<: *bouncer
+    container_name: hal-pgbouncer-1
+    labels: {lab.site: azure-z1, lab.kind: pgbouncer}
+  pgbouncer-2:
+    image: ha-lab-pgbouncer:local
+    restart: unless-stopped
+    dns_search: [.]
+    dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+    mem_limit: 64m
+    networks: [backbone]
+    depends_on: [pgbouncer-1]
+    container_name: hal-pgbouncer-2
+    labels: {lab.site: azure-z2, lab.kind: pgbouncer}
+
+  # ------------------------------------------------------------------ Kafka ×3 (KRaft: each node is broker + controller)
+  kafka-1:
+    image: apache/kafka:3.8.0
+    container_name: hal-kafka-1
+    restart: unless-stopped
+    dns_search: [.]
+    dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+    mem_limit: 520m
+    networks: [backbone]
+    labels: {lab.site: azure-z1, lab.kind: kafka}
+    volumes: [kafka-1:/var/lib/kafka/data]
+    environment: {<<: *kafka-env, KAFKA_NODE_ID: 1, KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka-1:9092", KAFKA_BROKER_RACK: azure-z1}
+  kafka-2:
+    image: apache/kafka:3.8.0
+    container_name: hal-kafka-2
+    restart: unless-stopped
+    dns_search: [.]
+    dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+    mem_limit: 520m
+    networks: [backbone]
+    labels: {lab.site: azure-z2, lab.kind: kafka}
+    volumes: [kafka-2:/var/lib/kafka/data]
+    environment: {<<: *kafka-env, KAFKA_NODE_ID: 2, KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka-2:9092", KAFKA_BROKER_RACK: azure-z2}
+  kafka-3:
+    image: apache/kafka:3.8.0
+    container_name: hal-kafka-3
+    restart: unless-stopped
+    dns_search: [.]
+    dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+    mem_limit: 520m
+    networks: [backbone]
+    labels: {lab.site: oracle, lab.kind: kafka}
+    volumes: [kafka-3:/var/lib/kafka/data]
+    environment: {<<: *kafka-env, KAFKA_NODE_ID: 3, KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka-3:9092", KAFKA_BROKER_RACK: oracle}
+
+  # ------------------------------------------------------------------ RabbitMQ ×3 (quorum queue for notifications)
+  rabbit-1:
+    <<: *rabbit
+    container_name: hal-rabbit-1
+    hostname: rabbit-1
+    labels: {lab.site: azure-z1, lab.kind: rabbitmq}
+    volumes: [rabbit-1:/var/lib/rabbitmq, "./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro", "./config/rabbit-entry.sh:/lab/rabbit-entry.sh:ro"]
+  rabbit-2:
+    <<: *rabbit
+    container_name: hal-rabbit-2
+    hostname: rabbit-2
+    labels: {lab.site: azure-z2, lab.kind: rabbitmq}
+    volumes: [rabbit-2:/var/lib/rabbitmq, "./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro", "./config/rabbit-entry.sh:/lab/rabbit-entry.sh:ro"]
+  rabbit-3:
+    <<: *rabbit
+    container_name: hal-rabbit-3
+    hostname: rabbit-3
+    labels: {lab.site: oracle, lab.kind: rabbitmq}
+    volumes: [rabbit-3:/var/lib/rabbitmq, "./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro", "./config/rabbit-entry.sh:/lab/rabbit-entry.sh:ro"]
+
+  # ------------------------------------------------------------------ Redis ×3 + Sentinel ×3 (sessions)
+  redis-1:
+    <<: *redis
+    container_name: hal-redis-1
+    labels: {lab.site: azure-z1, lab.kind: redis}
+    volumes: [redis-1:/data, "./config/redis-entry.sh:/lab/redis-entry.sh:ro"]
+    entrypoint: ["sh", "/lab/redis-entry.sh"]
+    environment: {ME: redis-1}
+  redis-2:
+    <<: *redis
+    container_name: hal-redis-2
+    labels: {lab.site: azure-z2, lab.kind: redis}
+    volumes: [redis-2:/data, "./config/redis-entry.sh:/lab/redis-entry.sh:ro"]
+    entrypoint: ["sh", "/lab/redis-entry.sh"]
+    environment: {ME: redis-2, REPLICA_OF: redis-1}
+  redis-3:
+    <<: *redis
+    container_name: hal-redis-3
+    labels: {lab.site: oracle, lab.kind: redis}
+    volumes: [redis-3:/data, "./config/redis-entry.sh:/lab/redis-entry.sh:ro"]
+    entrypoint: ["sh", "/lab/redis-entry.sh"]
+    environment: {ME: redis-3, REPLICA_OF: redis-1}
+  sentinel-1:
+    <<: *sentinel
+    container_name: hal-sentinel-1
+    labels: {lab.site: azure-z1, lab.kind: sentinel}
+    environment: {ME: sentinel-1}
+    volumes: [sentinel-1:/data, "./config/sentinel-entry.sh:/lab/sentinel-entry.sh:ro"]
+    depends_on: [redis-1, redis-2, redis-3]
+  sentinel-2:
+    <<: *sentinel
+    container_name: hal-sentinel-2
+    labels: {lab.site: azure-z2, lab.kind: sentinel}
+    environment: {ME: sentinel-2}
+    volumes: [sentinel-2:/data, "./config/sentinel-entry.sh:/lab/sentinel-entry.sh:ro"]
+    depends_on: [redis-1, redis-2, redis-3]
+  sentinel-3:
+    <<: *sentinel
+    container_name: hal-sentinel-3
+    labels: {lab.site: oracle, lab.kind: sentinel}
+    environment: {ME: sentinel-3}
+    volumes: [sentinel-3:/data, "./config/sentinel-entry.sh:/lab/sentinel-entry.sh:ro"]
+    depends_on: [redis-1, redis-2, redis-3]
+
+  # ------------------------------------------------------------------ edge load balancers
+  haproxy-1:
+    <<: *haproxy
+    container_name: hal-haproxy-1
+    labels: {lab.site: azure-z1, lab.kind: haproxy}
+    ports: ["127.0.0.1:8443:8443", "127.0.0.1:8404:8404"]   # for demos: https://127.0.0.1:8443/live · /stats
+  haproxy-2:
+    <<: *haproxy
+    container_name: hal-haproxy-2
+    labels: {lab.site: azure-z2, lab.kind: haproxy}
+    ports: ["127.0.0.1:8444:8443", "127.0.0.1:8405:8404"]
+
+  # ------------------------------------------------------------------ the application (one image, many roles)
+  api-1:
+    <<: *app
+    container_name: hal-api-1
+    command: [python, -u, api.py]
+    volumes: ["./app/api.py:/app/api.py:ro"]   # API-only updates without restarting the simulated exchange
+    labels: {lab.site: azure-z1, lab.kind: api}
+    environment: {SERVICE: api-1, SITE: azure-z1, PGBOUNCERS: "pgbouncer-1,pgbouncer-2"}
+  api-2:
+    <<: *app
+    container_name: hal-api-2
+    command: [python, -u, api.py]
+    volumes: ["./app/api.py:/app/api.py:ro"]
+    labels: {lab.site: azure-z1, lab.kind: api}
+    environment: {SERVICE: api-2, SITE: azure-z1, PGBOUNCERS: "pgbouncer-1,pgbouncer-2"}
+  api-3:
+    <<: *app
+    container_name: hal-api-3
+    command: [python, -u, api.py]
+    volumes: ["./app/api.py:/app/api.py:ro"]
+    labels: {lab.site: azure-z2, lab.kind: api}
+    environment: {SERVICE: api-3, SITE: azure-z2, PGBOUNCERS: "pgbouncer-2,pgbouncer-1"}
+  api-4:
+    <<: *app
+    container_name: hal-api-4
+    command: [python, -u, api.py]
+    volumes: ["./app/api.py:/app/api.py:ro"]
+    labels: {lab.site: azure-z2, lab.kind: api}
+    environment: {SERVICE: api-4, SITE: azure-z2, PGBOUNCERS: "pgbouncer-2,pgbouncer-1"}
+  relay-1:
+    <<: *app
+    container_name: hal-relay-1
+    command: [python, -u, relay.py]
+    labels: {lab.site: azure-z1, lab.kind: relay}
+    environment: {SERVICE: relay-1, SITE: azure-z1, PGBOUNCERS: "pgbouncer-1,pgbouncer-2"}
+  relay-2:
+    <<: *app
+    container_name: hal-relay-2
+    command: [python, -u, relay.py]
+    labels: {lab.site: azure-z2, lab.kind: relay}
+    environment: {SERVICE: relay-2, SITE: azure-z2, PGBOUNCERS: "pgbouncer-2,pgbouncer-1"}
+  router-1:
+    <<: *app
+    container_name: hal-router-1
+    command: [python, -u, router.py]
+    labels: {lab.site: azure-z1, lab.kind: router}
+    environment: {SERVICE: router-1, SITE: azure-z1, PGBOUNCERS: "pgbouncer-1,pgbouncer-2"}
+  router-2:
+    <<: *app
+    container_name: hal-router-2
+    command: [python, -u, router.py]
+    labels: {lab.site: azure-z2, lab.kind: router}
+    environment: {SERVICE: router-2, SITE: azure-z2, PGBOUNCERS: "pgbouncer-2,pgbouncer-1"}
+  feed-1:
+    <<: *app
+    container_name: hal-feed-1
+    command: [python, -u, feed.py]
+    labels: {lab.site: azure-z1, lab.kind: feed}
+    environment: {SERVICE: feed-1, SITE: azure-z1, TICKS_TOPIC: marketdata.ticks.lineA}
+  feed-2:
+    <<: *app
+    container_name: hal-feed-2
+    command: [python, -u, feed.py]
+    labels: {lab.site: oracle, lab.kind: feed}
+    environment: {SERVICE: feed-2, SITE: oracle, TICKS_TOPIC: marketdata.ticks.lineB}
+  bridge-1:
+    <<: *app
+    container_name: hal-bridge-1
+    command: [python, -u, bridge.py]
+    labels: {lab.site: azure-z2, lab.kind: bridge}
+    environment: {SERVICE: bridge-1, SITE: azure-z2, RABBITS: "rabbit-2,rabbit-1,rabbit-3"}
+  bridge-2:
+    <<: *app
+    container_name: hal-bridge-2
+    command: [python, -u, bridge.py]
+    labels: {lab.site: oracle, lab.kind: bridge}
+    environment: {SERVICE: bridge-2, SITE: oracle, RABBITS: "rabbit-3,rabbit-2,rabbit-1"}
+  worker-1:
+    <<: *app
+    container_name: hal-worker-1
+    command: [python, -u, worker.py]
+    labels: {lab.site: azure-z2, lab.kind: worker}
+    environment: {SERVICE: worker-1, SITE: azure-z2, PGBOUNCERS: "pgbouncer-2,pgbouncer-1", RABBITS: "rabbit-2,rabbit-1,rabbit-3"}
+  worker-2:
+    <<: *app
+    container_name: hal-worker-2
+    command: [python, -u, worker.py]
+    labels: {lab.site: oracle, lab.kind: worker}
+    environment: {SERVICE: worker-2, SITE: oracle, PGBOUNCERS: "pgbouncer-2,pgbouncer-1", RABBITS: "rabbit-3,rabbit-1,rabbit-2"}
+
+  # ------------------------------------------------------------------ outside the clouds
+  exchange:                       # SIMULATED exchange, lab only (never IBKR, never a real market)
+    image: ha-lab-app:local
+    container_name: hal-exchange
+    restart: unless-stopped
+    mem_limit: 256m
+    networks: [backbone]
+    command: [python, -u, exchange.py, --host, 0.0.0.0, --port, "9390"]
+    labels: {lab.site: nse, lab.kind: exchange}
+  control:                        # traders, audit, chaos buttons and the dashboard (the "ops" laptop)
+    build: ./app
+    image: ha-lab-app:local
+    container_name: hal-control
+    restart: unless-stopped
+    dns_search: [.]
+    dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+    mem_limit: 300m
+    networks: [backbone]
+    command: [python, -u, control.py]
+    environment: {SERVICE: control, SITE: ops, PGBOUNCERS: "pgbouncer-1,pgbouncer-2", DB_USER: app, DB_PASSWORD: apppass}
+    labels: {lab.site: ops, lab.kind: control}
+    ports: ["127.0.0.1:9700:9700"]
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock", "./app/control.py:/app/control.py:ro", "./app/ui:/app/ui:ro"]
+
+networks:
+  backbone:
+    name: ha-lab-backbone
+
+volumes:
+  backup-repo: {}                  # the backup repository (stands for object storage in another region)
+  etcd-1: {}
+  etcd-2: {}
+  etcd-3: {}
+  pg-1: {}
+  pg-2: {}
+  pg-3: {}
+  kafka-1: {}
+  kafka-2: {}
+  kafka-3: {}
+  rabbit-1: {}
+  rabbit-2: {}
+  rabbit-3: {}
+  redis-1: {}
+  redis-2: {}
+  redis-3: {}
+  sentinel-1: {}
+  sentinel-2: {}
+  sentinel-3: {}

@@ -1,0 +1,546 @@
+{
+ "before": {
+  "api-1": {
+   "service": "api-1",
+   "site": "azure-z1",
+   "counters": {
+    "requests": 1218,
+    "client_gone": 13,
+    "redis_ops": 331,
+    "logins": 9,
+    "orders": 321,
+    "cancels": 27,
+    "rejected": 1
+   },
+   "ticks": {
+    "ticks": 2152,
+    "dups": 2086,
+    "gap_now": 0.08,
+    "max_gap_60s": 0.11,
+    "symbols": 8
+   },
+   "timings": {},
+   "ws_open": 0,
+   "cpu_seconds": 3.5,
+   "pool": {
+    "size": 8,
+    "available": 8,
+    "waiting": 0
+   }
+  },
+  "api-2": {
+   "service": "api-2",
+   "site": "azure-z1",
+   "counters": {
+    "requests": 1221,
+    "client_gone": 12,
+    "redis_ops": 356,
+    "logins": 9,
+    "orders": 341,
+    "rejected": 6,
+    "cancels": 25
+   },
+   "ticks": {
+    "ticks": 2216,
+    "dups": 2037,
+    "gap_now": 0.09,
+    "max_gap_60s": 0.11,
+    "symbols": 8
+   },
+   "timings": {},
+   "ws_open": 0,
+   "cpu_seconds": 3.7,
+   "pool": {
+    "size": 8,
+    "available": 8,
+    "waiting": 0
+   }
+  },
+  "api-3": {
+   "service": "api-3",
+   "site": "azure-z2",
+   "counters": {
+    "requests": 1223,
+    "client_gone": 15,
+    "redis_ops": 341,
+    "logins": 11,
+    "orders": 324,
+    "rejected": 6,
+    "cancels": 28
+   },
+   "ticks": {
+    "ticks": 2224,
+    "dups": 2047,
+    "gap_now": 0.08,
+    "max_gap_60s": 0.11,
+    "symbols": 8
+   },
+   "timings": {},
+   "ws_open": 0,
+   "cpu_seconds": 3.8,
+   "pool": {
+    "size": 8,
+    "available": 8,
+    "waiting": 0
+   }
+  },
+  "api-4": {
+   "service": "api-4",
+   "site": "azure-z2",
+   "counters": {
+    "requests": 1223,
+    "client_gone": 6,
+    "redis_ops": 310,
+    "logins": 11,
+    "orders": 294,
+    "cancels": 30,
+    "rejected": 5
+   },
+   "ticks": {
+    "ticks": 2209,
+    "dups": 2198,
+    "gap_now": 0.0,
+    "max_gap_60s": 0.11,
+    "symbols": 8
+   },
+   "timings": {},
+   "ws_open": 0,
+   "cpu_seconds": 3.5,
+   "pool": {
+    "size": 8,
+    "available": 8,
+    "waiting": 0
+   }
+  }
+ },
+ "after": {
+  "api-1": {
+   "service": "api-1",
+   "site": "azure-z1",
+   "counters": {
+    "requests": 1795,
+    "client_gone": 23,
+    "redis_ops": 421,
+    "logins": 23,
+    "orders": 385,
+    "cancels": 32,
+    "rejected": 13,
+    "ws_opened": 9,
+    "ws_messages": 3307,
+    "ws_closed": 9
+   },
+   "ticks": {
+    "ticks": 3678,
+    "dups": 3612,
+    "gap_now": 0.01,
+    "max_gap_60s": 0.12,
+    "symbols": 8
+   },
+   "timings": {
+    "POST /login": {
+     "n": 14,
+     "wall_ms": {
+      "avg": 0.59,
+      "p50": 0.49,
+      "p95": 1.4,
+      "p99": 1.4,
+      "max": 1.4
+     },
+     "cpu_ms": {
+      "avg": 0.327,
+      "p95": 0.7,
+      "max": 0.7
+     }
+    },
+    "GET /quote": {
+     "n": 208,
+     "wall_ms": {
+      "avg": 0.05,
+      "p50": 0.04,
+      "p95": 0.09,
+      "p99": 0.13,
+      "max": 0.15
+     },
+     "cpu_ms": {
+      "avg": 0.047,
+      "p95": 0.09,
+      "max": 0.15
+     }
+    },
+    "GET /orders": {
+     "n": 44,
+     "wall_ms": {
+      "avg": 1.85,
+      "p50": 1.57,
+      "p95": 3.21,
+      "p99": 5.95,
+      "max": 5.95
+     },
+     "cpu_ms": {
+      "avg": 0.555,
+      "p95": 0.82,
+      "max": 2.02
+     }
+    },
+    "POST /orders": {
+     "n": 76,
+     "wall_ms": {
+      "avg": 17.41,
+      "p50": 5.38,
+      "p95": 22.56,
+      "p99": 629.03,
+      "max": 629.03
+     },
+     "cpu_ms": {
+      "avg": 1.242,
+      "p95": 1.93,
+      "max": 2.82
+     }
+    },
+    "POST /cancel": {
+     "n": 8,
+     "wall_ms": {
+      "avg": 5.52,
+      "p50": 5.75,
+      "p95": 7.85,
+      "p99": 7.85,
+      "max": 7.85
+     },
+     "cpu_ms": {
+      "avg": 0.88,
+      "p95": 1.35,
+      "max": 1.35
+     }
+    }
+   },
+   "ws_open": 0,
+   "cpu_seconds": 5.4,
+   "pool": {
+    "size": 7,
+    "available": 7,
+    "waiting": 0
+   }
+  },
+  "api-2": {
+   "service": "api-2",
+   "site": "azure-z1",
+   "counters": {
+    "requests": 1806,
+    "client_gone": 20,
+    "redis_ops": 454,
+    "logins": 20,
+    "orders": 421,
+    "rejected": 12,
+    "cancels": 32,
+    "ws_opened": 9,
+    "ws_messages": 2912,
+    "ws_closed": 9
+   },
+   "ticks": {
+    "ticks": 3743,
+    "dups": 3564,
+    "gap_now": 0.07,
+    "max_gap_60s": 0.11,
+    "symbols": 8
+   },
+   "timings": {
+    "POST /login": {
+     "n": 11,
+     "wall_ms": {
+      "avg": 0.51,
+      "p50": 0.45,
+      "p95": 1.05,
+      "p99": 1.05,
+      "max": 1.05
+     },
+     "cpu_ms": {
+      "avg": 0.313,
+      "p95": 0.57,
+      "max": 0.57
+     }
+    },
+    "GET /quote": {
+     "n": 202,
+     "wall_ms": {
+      "avg": 0.05,
+      "p50": 0.04,
+      "p95": 0.08,
+      "p99": 0.14,
+      "max": 0.34
+     },
+     "cpu_ms": {
+      "avg": 0.047,
+      "p95": 0.08,
+      "max": 0.34
+     }
+    },
+    "GET /orders": {
+     "n": 51,
+     "wall_ms": {
+      "avg": 1.91,
+      "p50": 1.57,
+      "p95": 3.48,
+      "p99": 5.41,
+      "max": 5.41
+     },
+     "cpu_ms": {
+      "avg": 0.581,
+      "p95": 1.18,
+      "max": 1.45
+     }
+    },
+    "POST /orders": {
+     "n": 86,
+     "wall_ms": {
+      "avg": 21.01,
+      "p50": 6.19,
+      "p95": 104.18,
+      "p99": 473.69,
+      "max": 473.69
+     },
+     "cpu_ms": {
+      "avg": 1.462,
+      "p95": 2.96,
+      "max": 4.46
+     }
+    },
+    "POST /cancel": {
+     "n": 8,
+     "wall_ms": {
+      "avg": 15.53,
+      "p50": 3.54,
+      "p95": 97.07,
+      "p99": 97.07,
+      "max": 97.07
+     },
+     "cpu_ms": {
+      "avg": 0.68,
+      "p95": 1.09,
+      "max": 1.09
+     }
+    }
+   },
+   "ws_open": 0,
+   "cpu_seconds": 5.5,
+   "pool": {
+    "size": 7,
+    "available": 6,
+    "waiting": 0
+   }
+  },
+  "api-3": {
+   "service": "api-3",
+   "site": "azure-z2",
+   "counters": {
+    "requests": 1817,
+    "client_gone": 25,
+    "redis_ops": 433,
+    "logins": 18,
+    "orders": 393,
+    "rejected": 22,
+    "cancels": 39,
+    "ws_opened": 11,
+    "ws_messages": 3967,
+    "ws_closed": 11
+   },
+   "ticks": {
+    "ticks": 3753,
+    "dups": 3576,
+    "gap_now": 0.07,
+    "max_gap_60s": 0.11,
+    "symbols": 8
+   },
+   "timings": {
+    "POST /login": {
+     "n": 7,
+     "wall_ms": {
+      "avg": 0.49,
+      "p50": 0.44,
+      "p95": 0.76,
+      "p99": 0.76,
+      "max": 0.76
+     },
+     "cpu_ms": {
+      "avg": 0.285,
+      "p95": 0.34,
+      "max": 0.34
+     }
+    },
+    "GET /quote": {
+     "n": 205,
+     "wall_ms": {
+      "avg": 0.04,
+      "p50": 0.04,
+      "p95": 0.08,
+      "p99": 0.12,
+      "max": 0.18
+     },
+     "cpu_ms": {
+      "avg": 0.044,
+      "p95": 0.08,
+      "max": 0.19
+     }
+    },
+    "POST /orders": {
+     "n": 85,
+     "wall_ms": {
+      "avg": 8.53,
+      "p50": 6.08,
+      "p95": 17.33,
+      "p99": 79.74,
+      "max": 79.74
+     },
+     "cpu_ms": {
+      "avg": 1.372,
+      "p95": 2.39,
+      "max": 3.66
+     }
+    },
+    "GET /orders": {
+     "n": 53,
+     "wall_ms": {
+      "avg": 1.84,
+      "p50": 1.89,
+      "p95": 2.67,
+      "p99": 2.87,
+      "max": 2.87
+     },
+     "cpu_ms": {
+      "avg": 0.57,
+      "p95": 0.88,
+      "max": 1.0
+     }
+    },
+    "POST /cancel": {
+     "n": 13,
+     "wall_ms": {
+      "avg": 49.73,
+      "p50": 4.27,
+      "p95": 582.83,
+      "p99": 582.83,
+      "max": 582.83
+     },
+     "cpu_ms": {
+      "avg": 0.875,
+      "p95": 1.44,
+      "max": 1.44
+     }
+    }
+   },
+   "ws_open": 0,
+   "cpu_seconds": 5.9,
+   "pool": {
+    "size": 7,
+    "available": 7,
+    "waiting": 0
+   }
+  },
+  "api-4": {
+   "service": "api-4",
+   "site": "azure-z2",
+   "counters": {
+    "requests": 1820,
+    "client_gone": 20,
+    "redis_ops": 377,
+    "logins": 19,
+    "orders": 342,
+    "cancels": 39,
+    "rejected": 16,
+    "ws_opened": 11,
+    "ws_messages": 3517,
+    "ws_closed": 11
+   },
+   "ticks": {
+    "ticks": 3737,
+    "dups": 3726,
+    "gap_now": 0.08,
+    "max_gap_60s": 0.11,
+    "symbols": 8
+   },
+   "timings": {
+    "GET /quote": {
+     "n": 218,
+     "wall_ms": {
+      "avg": 0.05,
+      "p50": 0.04,
+      "p95": 0.09,
+      "p99": 0.11,
+      "max": 0.26
+     },
+     "cpu_ms": {
+      "avg": 0.046,
+      "p95": 0.09,
+      "max": 0.26
+     }
+    },
+    "POST /orders": {
+     "n": 59,
+     "wall_ms": {
+      "avg": 12.02,
+      "p50": 5.72,
+      "p95": 75.86,
+      "p99": 123.07,
+      "max": 123.07
+     },
+     "cpu_ms": {
+      "avg": 1.329,
+      "p95": 2.53,
+      "max": 4.51
+     }
+    },
+    "POST /login": {
+     "n": 8,
+     "wall_ms": {
+      "avg": 0.46,
+      "p50": 0.49,
+      "p95": 0.56,
+      "p99": 0.56,
+      "max": 0.56
+     },
+     "cpu_ms": {
+      "avg": 0.317,
+      "p95": 0.42,
+      "max": 0.42
+     }
+    },
+    "GET /orders": {
+     "n": 66,
+     "wall_ms": {
+      "avg": 1.87,
+      "p50": 1.61,
+      "p95": 3.25,
+      "p99": 5.02,
+      "max": 5.02
+     },
+     "cpu_ms": {
+      "avg": 0.561,
+      "p95": 1.09,
+      "max": 1.45
+     }
+    },
+    "POST /cancel": {
+     "n": 15,
+     "wall_ms": {
+      "avg": 5.31,
+      "p50": 5.04,
+      "p95": 10.77,
+      "p99": 10.77,
+      "max": 10.77
+     },
+     "cpu_ms": {
+      "avg": 1.066,
+      "p95": 2.77,
+      "max": 2.77
+     }
+    }
+   },
+   "ws_open": 0,
+   "cpu_seconds": 5.5,
+   "pool": {
+    "size": 7,
+    "available": 7,
+    "waiting": 0
+   }
+  }
+ }
+}

@@ -1,0 +1,2 @@
+2026-10-26 10:45:02.856 P00   INFO: verify command begin 2.59.3: --exec-id=215910-02bae570 --log-level-console=info --log-level-file=off --output=text --process-max=1 --repo=1 --repo1-path=/backup/repo --stanza=tradelab
+2026-10-26 10:45:12.046 P00   INFO: verify command end: completed successfully (9191ms)

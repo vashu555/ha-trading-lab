@@ -1,0 +1,121 @@
+{
+  "prepared_at_india": "2026-10-27T10:04:16+05:30",
+  "source_files_byte_matched": 124,
+  "python_files_parsed": 28,
+  "regression_tests": {
+    "passed": 8,
+    "failed": 0,
+    "windows_seconds": 0.016,
+    "ubuntu_seconds": 0.019
+  },
+  "checked_on": [
+    "Windows Python 3.13.5",
+    "Ubuntu Python 3.14.4"
+  ],
+  "compose_configs_validated": [
+    "docker-compose.yml",
+    "loadtest/docker-compose.yml"
+  ],
+  "shell_scripts_bash_syntax_passed": true,
+  "docker_server_version": "29.9.0",
+  "compose_version": "v5.6.0",
+  "live_snapshot": {
+    "ready": true,
+    "container_count": 38,
+    "container_states": {
+      "control": "running",
+      "api-4": "running",
+      "api-3": "running",
+      "api-2": "running",
+      "api-1": "running",
+      "router-2": "running",
+      "haproxy-2": "running",
+      "haproxy-1": "running",
+      "exchange": "running",
+      "router-1": "running",
+      "worker-2": "running",
+      "worker-1": "running",
+      "relay-2": "running",
+      "relay-1": "running",
+      "bridge-2": "running",
+      "bridge-1": "running",
+      "feed-2": "running",
+      "feed-1": "running",
+      "pg-3": "running",
+      "pg-2": "running",
+      "pg-1": "running",
+      "sentinel-1": "running",
+      "sentinel-3": "running",
+      "sentinel-2": "running",
+      "pgbouncer-2": "running",
+      "redis-2": "running",
+      "redis-3": "running",
+      "rabbit-3": "running",
+      "rabbit-2": "running",
+      "redis-1": "running",
+      "rabbit-1": "running",
+      "etcd-3": "running",
+      "etcd-2": "running",
+      "kafka-2": "running",
+      "etcd-1": "running",
+      "kafka-1": "running",
+      "kafka-3": "running",
+      "pgbouncer-1": "running"
+    },
+    "postgres": [
+      {
+        "name": "pg-1",
+        "role": "leader",
+        "state": "running",
+        "api_url": "http://pg-1:8008/patroni",
+        "host": "pg-1",
+        "port": 5432,
+        "timeline": 24
+      },
+      {
+        "name": "pg-2",
+        "role": "quorum_standby",
+        "state": "streaming",
+        "api_url": "http://pg-2:8008/patroni",
+        "host": "pg-2",
+        "port": 5432,
+        "timeline": 24,
+        "lag": 0
+      },
+      {
+        "name": "pg-3",
+        "role": "quorum_standby",
+        "state": "streaming",
+        "api_url": "http://pg-3:8008/patroni",
+        "host": "pg-3",
+        "port": 5432,
+        "timeline": 24,
+        "lag": 0
+      }
+    ],
+    "audit": {
+      "ok": true,
+      "t": 1793075659.0374994,
+      "duration_ms": 7.7,
+      "books_checked_at": 1793075473.855673,
+      "books_wrong": 0,
+      "fills_missing": 0,
+      "sent_twice": 0,
+      "notify_missing": 0
+    }
+  },
+  "not_performed_during_handoff": [
+    "Fresh-machine deployment",
+    "New stress benchmark",
+    "Full database restore",
+    "Failure drills"
+  ],
+  "exclusions": [
+    "Git history",
+    "Browser profiles/tmp",
+    "Python caches",
+    "Live database/queue volumes",
+    "Backup contents",
+    "Continuously written Locust UI files (compressed snapshots included instead)"
+  ]
+}

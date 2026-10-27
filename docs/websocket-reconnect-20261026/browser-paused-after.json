@@ -1,0 +1,52 @@
+[
+  {
+    "label": "paused-after",
+    "mode": "pause",
+    "port": 8443,
+    "target_api": "api-4",
+    "kill_at_ms": 125.29999999701977,
+    "recovery_ms": 4123.8,
+    "new_api": "api-1",
+    "events": [
+      {
+        "type": "connect",
+        "id": 0,
+        "t": 14.899999998509884
+      },
+      {
+        "type": "open",
+        "id": 0,
+        "t": 59.600000001490116
+      },
+      {
+        "type": "first-tick",
+        "id": 0,
+        "t": 60.100000001490116,
+        "server": "api-4"
+      },
+      {
+        "type": "close",
+        "id": 0,
+        "t": 4063.7000000029802,
+        "code": 1006
+      },
+      {
+        "type": "connect",
+        "id": 1,
+        "t": 4241.39999999851
+      },
+      {
+        "type": "open",
+        "id": 1,
+        "t": 4248.70000000298
+      },
+      {
+        "type": "first-tick",
+        "id": 1,
+        "t": 4249.10000000149,
+        "server": "api-1"
+      }
+    ],
+    "status": "via api-1"
+  }
+]

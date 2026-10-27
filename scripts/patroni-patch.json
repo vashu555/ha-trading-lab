@@ -1,0 +1,16 @@
+{
+  "synchronous_mode": "quorum",
+  "synchronous_node_count": 1,
+  "failsafe_mode": true,
+  "postgresql": {
+    "parameters": {
+      "archive_mode": "on",
+      "archive_command": "pgbackrest --stanza=tradelab archive-push \"%p\"",
+      "archive_timeout": 60,
+      "shared_buffers": "128MB"
+    },
+    "recovery_conf": {
+      "restore_command": "pgbackrest --stanza=tradelab archive-get %f \"%p\""
+    }
+  }
+}

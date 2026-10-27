@@ -1,0 +1,24 @@
+# Load generator for the HA Trading Lab. A separate Compose project on the lab's network, so it never mixes with the
+# 38 lab containers (the dashboard and the drift check ignore it).
+#   live demo (web UI):  docker compose -f loadtest/docker-compose.yml up -d --build   → http://127.0.0.1:8089
+#   measured run:        python3 loadtest/run_test.py --users 100 --minutes 5          → docs/loadtest/<time>/report.html
+name: ha-lab-loadtest
+services:
+  locust:
+    build: .
+    image: ha-lab-loadtest:local
+    container_name: hal-locust
+    networks: [backbone]
+    dns_search: [.]
+    dns_opt: ["timeout:1", "attempts:1", "ndots:0"]
+    mem_limit: 768m
+    # The UI Host is only a default: locustfile.py routes explicitly through both LBs.
+    environment: {LB_HOSTS: "haproxy-1,haproxy-2", LB_PORT: "8443"}
+    ports: ["127.0.0.1:8089:8089"]
+    volumes: [".:/mnt/locust", "../docs/loadtest:/mnt/results"]
+    command: ["locust", "-f", "/mnt/locust/locustfile.py", "--web-host", "0.0.0.0", "--processes", "${LOCUST_PROCESSES:-2}",
+              "--csv", "/mnt/results/ui/locust", "--csv-full-history", "--html", "/mnt/results/ui/locust.html"]
+networks:
+  backbone:
+    external: true
+    name: ha-lab-backbone

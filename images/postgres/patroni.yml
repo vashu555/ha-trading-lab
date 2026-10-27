@@ -1,0 +1,66 @@
+# Shared by pg-1, pg-2, pg-3. Each node sets its own name and addresses through PATRONI_* environment variables.
+# The "bootstrap.dcs" part is only used when the cluster is first created; afterwards it lives in etcd and is changed
+# with PATCH /config (see scripts/upgrade_best_practices.sh).
+scope: tradelab
+namespace: /service/
+
+restapi:
+  listen: 0.0.0.0:8008            # /primary answers 200 only on the leader: HAProxy uses it to find the writer
+
+bootstrap:
+  dcs:                            # cluster-wide settings, stored in etcd
+    ttl: 20                       # the leader key lives 20 s (Patroni's minimum); a leader that can't renew it demotes itself
+    loop_wait: 2
+    retry_timeout: 4
+    maximum_lag_on_failover: 1048576
+    # QUORUM commit: a commit waits until ANY 1 of the 2 standbys has it ("Received" = on two machines). On failover,
+    # Patroni promotes whichever standby the quorum proves has every committed transaction, so losing a specific
+    # standby never blocks recovery.
+    synchronous_mode: quorum
+    synchronous_mode_strict: false  # if no standby is left, keep serving alone (and alarm) rather than stop
+    synchronous_node_count: 1
+    failsafe_mode: true           # if only etcd is unreachable but all members see each other, the leader keeps going
+    postgresql:
+      use_pg_rewind: true         # an old leader rewinds its divergent WAL and follows the new one
+      use_slots: true             # replication slots: the leader keeps WAL until each standby has it
+      parameters:
+        wal_level: replica
+        hot_standby: "on"
+        wal_log_hints: "on"
+        max_connections: 80
+        shared_buffers: 128MB
+        max_wal_senders: 10
+        max_replication_slots: 10
+        wal_keep_size: 128MB
+        synchronous_commit: "on"
+        password_encryption: scram-sha-256
+        # continuous archiving of every change (WAL) to the backup repository: point-in-time recovery
+        archive_mode: "on"
+        archive_command: 'pgbackrest --stanza=tradelab archive-push "%p"'
+        archive_timeout: 60
+      recovery_conf:
+        # a replica that fell far behind fetches the missing WAL from the archive
+        restore_command: 'pgbackrest --stanza=tradelab archive-get %f "%p"'
+  initdb:
+    - encoding: UTF8
+    - data-checksums
+  post_bootstrap: /scripts/post_bootstrap.sh
+
+postgresql:
+  listen: 0.0.0.0:5432
+  data_dir: /var/lib/postgresql/data/pgdata
+  bin_dir: /usr/lib/postgresql/16/bin
+  pgpass: /tmp/pgpass
+  authentication:
+    superuser: {username: postgres, password: labsuper}
+    replication: {username: replicator, password: labrepl}
+    rewind: {username: rewinder, password: labrewind}
+  pg_hba:
+    - local all all trust
+    - host replication replicator 0.0.0.0/0 scram-sha-256
+    - host all all 0.0.0.0/0 scram-sha-256
+
+tags:
+  nofailover: false
+  noloadbalance: false
+  clonefrom: false

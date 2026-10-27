@@ -1,0 +1,7 @@
+{
+  "samples": 31,
+  "max_audit_age_s": 3.196,
+  "median_check_ms": 46.3,
+  "samples_while_books_running": 4,
+  "checks_passed": true
+}
